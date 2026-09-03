@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<!--
+	Clarify collects nothing and tracks nothing. All state (workflow
+	progress, jargon glossary) is bundled with the app or written to the
+	device's local Application Support directory via FileManager — there
+	is no analytics SDK, no ad SDK, no custom network layer, and no
+	Clarify account system anywhere in the codebase. Optional Sign in with
+	Apple is handled by Apple's system authentication services; guide
+	activity and progress remain on-device.
+
+	NSPrivacyAccessedAPITypes is intentionally empty: this codebase does
+	not call any of Apple's declared "required reason" APIs (no
+	UserDefaults, no file-timestamp queries, no disk-space queries, no
+	system-boot-time queries). If a future change introduces one of
+	those APIs, this array must be updated with the matching API type
+	and an approved reason code before submission.
+	-->
+	<key>NSPrivacyTracking</key>
+	<false/>
+	<key>NSPrivacyTrackingDomains</key>
+	<array/>
+	<key>NSPrivacyCollectedDataTypes</key>
+	<array/>
+	<key>NSPrivacyAccessedAPITypes</key>
+	<array/>
+</dict>
+</plist>
