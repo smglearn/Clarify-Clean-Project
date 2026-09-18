@@ -19,9 +19,4 @@ jobs:
     - name: Build
       run: xcodebuild -project Clarify.xcodeproj -target Clarify -configuration Debug -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 17,OS=26.5' CODE_SIGNING_ALLOWED=NO build
     - name: Run tests
-      run: |
-        if grep -Eq 'com\.apple\.product-type\.bundle\.(unit-test|ui-testing)' Clarify.xcodeproj/project.pbxproj; then
-          xcodebuild -project Clarify.xcodeproj -scheme Clarify -configuration Debug -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 17,OS=26.5' CODE_SIGNING_ALLOWED=NO test
-        else
-          echo "No Xcode test targets configured; skipping tests."
-        fi
+      run: xcodebuild -project Clarify.xcodeproj -scheme Clarify -configuration Debug -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 17,OS=26.5' CODE_SIGNING_ALLOWED=NO test
