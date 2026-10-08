@@ -134,7 +134,8 @@ struct WorkflowListView: View {
 }
 
 /// Search rules shared by the home list and level counts: title,
-/// summary, provider name, level name, and the words used in each step,
+/// summary, provider name, level name, and every step's title and
+/// instruction,
 /// so searching "locked out" finds a guide even if the title says
 /// "Get Back Into Your Account".
 enum WorkflowSearch {
@@ -145,7 +146,7 @@ enum WorkflowSearch {
             workflow.summary,
             workflow.company?.displayName ?? "Universal Everyday",
             workflow.level.displayName,
-        ] + workflow.steps.map(\.title)
+        ] + workflow.steps.flatMap { [$0.title, $0.instruction] }
         return fields.contains { $0.lowercased().contains(query) }
     }
 }

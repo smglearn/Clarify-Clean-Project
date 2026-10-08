@@ -152,17 +152,17 @@ extension WorkflowLibrary {
                 jargonTerms: ["Device Storage"]
             ),
             WorkflowStep(
+                title: "Save Copies of Anything Precious",
+                instruction: "Before deleting photos or videos, copy the ones you care about to a computer or external drive. If your photos sync to iCloud or Google Photos, deleting on the phone deletes the cloud copy too.",
+                jargonTerms: ["Cloud Backup"]
+            ),
+            WorkflowStep(
                 title: "Clear Out Big Videos",
                 instruction: "Videos take up far more room than photos. Delete ones you don't need, then empty the Recently Deleted album so the space is actually freed."
             ),
             WorkflowStep(
                 title: "Remove Apps You Don't Use",
-                instruction: "Delete or offload apps you haven't opened in months. You can download them again any time from the app store."
-            ),
-            WorkflowStep(
-                title: "Back Up Before Deleting Anything Precious",
-                instruction: "Turn on photo backup to a cloud service first, so clearing space never means losing memories.",
-                jargonTerms: ["Cloud Backup"],
+                instruction: "Offload or delete apps you haven't opened in months. Offloading keeps your data, and you can download any app again from the app store.",
                 xpValue: 15
             )
         ]
@@ -352,17 +352,18 @@ extension WorkflowLibrary {
         level: .easy,
         steps: [
             WorkflowStep(
+                title: "Android Phone? Try to Find It First",
+                instruction: "If it's an Android phone, go to google.com/android/find before anything else. You can ring, lock, or erase it there, but only while it's still signed in.",
+                jargonTerms: ["Find My"]
+            ),
+            WorkflowStep(
                 title: "Open Your Devices",
                 instruction: "On another device, go to myaccount.google.com, open Security, and choose Your devices or Manage all devices."
             ),
             WorkflowStep(
-                title: "Pick the Lost Device",
-                instruction: "Find the phone or computer in the list. The last-active time helps you tell similar devices apart.",
+                title: "Sign Out of the Lost Device",
+                instruction: "Find it in the list, using the last-active time to tell similar devices apart, and choose Sign out. Google apps on it will need your password again.",
                 jargonTerms: ["Active Session"]
-            ),
-            WorkflowStep(
-                title: "Sign Out",
-                instruction: "Choose Sign out. Google apps on that device will need your password again before anyone can use them."
             ),
             WorkflowStep(
                 title: "Change Your Password Too",
@@ -425,8 +426,8 @@ extension WorkflowLibrary {
                 instruction: "If it's truly missing, choose Mark as Lost. This locks it and shows a message with a number someone can call to return it."
             ),
             WorkflowStep(
-                title: "Erase Only as a Last Step",
-                instruction: "Erasing protects your data but also stops you from tracking it. Wait until you're sure it won't be found before choosing Erase.",
+                title: "Erase if Your Data Is at Risk",
+                instruction: "If you think it was stolen, choose Erase This Device to protect your data. Afterward, don't remove it from Find My: staying on your account keeps it locked so no one else can set it up.",
                 xpValue: 15
             )
         ]
@@ -833,7 +834,6 @@ extension WorkflowLibrary {
             WorkflowStep(
                 title: "Add a Backup Method",
                 instruction: "Add a second phone number or app as a backup, so losing one phone never locks you out.",
-                jargonTerms: ["Backup Code"],
                 xpValue: 15
             )
         ]

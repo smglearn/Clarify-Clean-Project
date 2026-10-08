@@ -101,10 +101,12 @@ final class CatalogTests: XCTestCase {
 
     // MARK: Search
 
-    func testSearchMatchesLevelNamesAndStepTitles() {
+    func testSearchMatchesLevelNamesAndStepText() {
         let guide = WorkflowLibrary.forgotPasswordBasics
         XCTAssertTrue(WorkflowSearch.matches(guide, query: "very easy"))
         XCTAssertTrue(WorkflowSearch.matches(guide, query: "forgot password link"))
+        XCTAssertTrue(WorkflowSearch.matches(guide, query: "locked out"))
+        XCTAssertTrue(WorkflowSearch.matches(WorkflowLibrary.googleAccountRecovery, query: "g.co/recover"))
         XCTAssertTrue(WorkflowSearch.matches(guide, query: ""))
         XCTAssertFalse(WorkflowSearch.matches(guide, query: "kubernetes"))
     }
