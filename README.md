@@ -1,15 +1,34 @@
-# Clarify
+# Tech Unknotted (project: Clarify)
 
-Clarify is a native SwiftUI learning app that turns technical setup tasks into guided, plain-English workflows. All guide progress, XP, streaks, badges, onboarding state, and the optional local profile are stored on the device.
+Tech Unknotted: Setup Guides is a native SwiftUI app that turns tech tasks into guided, plain-English workflows, from fixing a forgotten password to configuring cloud infrastructure. All guide progress, XP, streaks, badges, onboarding state, and the optional local profile are stored on the device.
 
 ## Current catalog
 
-- 300 workflows: 50 each for Universal, Google, Apple, Microsoft, Amazon/AWS, and Facebook/Meta
-- 517 glossary terms
+- 336 guides across six sections: Everyday & Universal, Google, Apple, Microsoft, Amazon, and Facebook
+- Every guide has a difficulty level, and every section runs easiest-first:
+
+| Level | Who it's for | Guides |
+| --- | --- | --- |
+| Very Easy | Everyday fixes like login trouble; no tech experience needed | 22 |
+| Easy | Simple settings anyone can change on their own accounts | 38 |
+| Medium | Running a website, a small team, or a business page | 72 |
+| Hard | Admin and developer setup with several moving parts | 114 |
+| Very Hard | Cloud infrastructure and code-level configuration | 90 |
+
+- 532 glossary terms, including 15 everyday words for the beginner guides
 - 23 badges
 - iOS and iPadOS deployment target: 17.0
 - Bundle identifier: `com.glennsgaming.Clarify`
 - Version: 1.0 (build 1)
+
+## Where things live
+
+- `Clarify/Models/GuideLevel.swift`: the five difficulty levels and the level badge
+- `Clarify/Models/BeginnerGuides.swift`: the 36 Very Easy and Easy guides (login problems, password resets, hacked accounts, login codes, storage, updates, backups)
+- `Clarify/Models/BeginnerGlossary.swift`: everyday glossary cards
+- `Clarify/Models/WorkflowModels.swift`: the original 300 guides, each with a `level:`
+- `Clarify/Models/AppLinks.swift`: support and privacy URLs shown in Settings once they are public
+- `ClarifyTests/CatalogTests.swift`: catalog integrity tests run by CI
 
 ## Open and run
 
