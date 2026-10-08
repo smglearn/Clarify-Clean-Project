@@ -22,8 +22,8 @@ private struct OnboardingPage: Identifiable {
 private let onboardingPages: [OnboardingPage] = [
     OnboardingPage(
         symbolName: "bubble.left.and.text.bubble.right.fill",
-        title: "Welcome to Clarify",
-        message: "No accounts, no sign-in, nothing sent anywhere. Just clear, guided steps for setup tasks that are usually full of jargon.",
+        title: "Welcome to Tech Unknotted",
+        message: "No accounts needed and nothing sent anywhere. Just clear, guided steps for tech tasks that are usually full of jargon.",
         tint: .indigo
     ),
     OnboardingPage(
@@ -33,9 +33,15 @@ private let onboardingPages: [OnboardingPage] = [
         tint: .teal
     ),
     OnboardingPage(
+        symbolName: "dial.low.fill",
+        title: "Start Easy, Go as Far as You Like",
+        message: "Every guide is marked Very Easy, Easy, Medium, Hard, or Very Hard. Start with everyday fixes like a forgotten password and work up from there.",
+        tint: .green
+    ),
+    OnboardingPage(
         symbolName: "globe.americas.fill",
         title: "Guides for Major Platforms",
-        message: "Google, Apple, Microsoft, Amazon, and Facebook all have their own setup quirks. Clarify has guides for each, written in plain English.",
+        message: "Google, Apple, Microsoft, Amazon, and Facebook all have their own setup quirks. There are guides for each, written in plain English.",
         tint: .orange
     ),
     OnboardingPage(

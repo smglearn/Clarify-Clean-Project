@@ -21,6 +21,7 @@ struct ProgressHubView: View {
                     levelCard
                     statsRow
                     milestonesSection
+                    levelProgressSection
                     providerProgressSection
                     badgesSection
                 }
@@ -242,8 +243,8 @@ struct ProgressHubView: View {
     }
 
     private func providerRow(_ progress: ProviderProgress) -> some View {
-        let tint = progress.company?.tint ?? .purple
-        let name = progress.company?.displayName ?? "Universal"
+        let tint = progress.company?.tint ?? .green
+        let name = progress.company?.displayName ?? "Everyday & Universal"
 
         return HStack(spacing: 14) {
             Image(systemName: progress.company?.symbolName ?? "sparkles")
@@ -268,6 +269,53 @@ struct ProgressHubView: View {
         .background(Color(.secondarySystemBackground), in: RoundedRectangle(cornerRadius: 14, style: .continuous))
         .accessibilityElement(children: .combine)
         .accessibilityLabel("\(name), \(progress.completed) of \(progress.total) guides complete")
+    }
+
+    // MARK: Progress by level
+
+    /// Guides finished at each difficulty, Very Easy through Very Hard —
+    /// a quick read on whether someone is ready to try the next level up.
+    private var levelProgressSection: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text("Progress by Level")
+                .font(.title3.bold())
+
+            VStack(spacing: 10) {
+                ForEach(GuideLevel.allCases) { level in
+                    levelRow(level)
+                }
+            }
+        }
+    }
+
+    private func levelRow(_ level: GuideLevel) -> some View {
+        let guides = WorkflowLibrary.all.filter { $0.level == level }
+        let completed = guides.filter { gamification.completedWorkflowIDs.contains($0.id) }.count
+        let fraction = guides.isEmpty ? 0 : Double(completed) / Double(guides.count)
+
+        return HStack(spacing: 14) {
+            Text(level.meter)
+                .font(.system(size: 8))
+                .tracking(1)
+                .foregroundStyle(level.tint)
+                .frame(width: 44)
+
+            VStack(alignment: .leading, spacing: 6) {
+                Text(level.displayName)
+                    .font(.subheadline.weight(.semibold))
+                ProgressView(value: fraction)
+                    .tint(level.tint)
+            }
+
+            Text("\(completed)/\(guides.count)")
+                .font(.caption.weight(.semibold))
+                .foregroundStyle(.secondary)
+                .monospacedDigit()
+        }
+        .padding(12)
+        .background(Color(.secondarySystemBackground), in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("\(level.displayName) guides, \(completed) of \(guides.count) complete")
     }
 
     // MARK: Badges

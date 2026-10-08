@@ -12343,10 +12343,28 @@ enum WorkflowLibrary {
 
     /// Convenience grouping used by `WorkflowListView` to render one
     /// section per provider, with universal guides in their own section.
+    ///
+    /// Universal comes first: it holds the everyday, provider-neutral
+    /// guides (forgotten passwords, missing login codes, Wi-Fi trouble)
+    /// that most people need before anything company-specific. Inside
+    /// each section, guides run easiest-first.
     static func grouped() -> [WorkflowGroup] {
-        Company.allCases.map { company in
-            WorkflowGroup(company: company, workflows: all.filter { $0.company == company })
-        } + [WorkflowGroup(company: nil, workflows: all.filter { $0.company == nil })]
+        [WorkflowGroup(company: nil, workflows: sortedByLevel(all.filter { $0.company == nil }))]
+            + Company.allCases.map { company in
+                WorkflowGroup(company: company, workflows: sortedByLevel(all.filter { $0.company == company }))
+            }
+    }
+
+    /// Easiest-first, keeping the library's own order within a level.
+    /// (`sorted` isn't guaranteed stable, so the original index breaks ties.)
+    static func sortedByLevel(_ workflows: [Workflow]) -> [Workflow] {
+        workflows.enumerated()
+            .sorted { lhs, rhs in
+                lhs.element.level == rhs.element.level
+                    ? lhs.offset < rhs.offset
+                    : lhs.element.level < rhs.element.level
+            }
+            .map(\.element)
     }
 }
 
