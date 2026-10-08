@@ -82,7 +82,7 @@ enum BadgeLibrary {
         Badge(id: "guide-veteran", title: "Guide Veteran", badgeDescription: "Complete 50 guides.", symbolName: "medal.fill", goal: .guides(50)),
         Badge(id: "clarity-century", title: "Clarity Century", badgeDescription: "Complete 100 guides.", symbolName: "books.vertical.fill", goal: .guides(100)),
         Badge(id: "deep-library", title: "Deep Library", badgeDescription: "Complete 200 guides.", symbolName: "binoculars.fill", goal: .guides(200)),
-        Badge(id: "guide-master", title: "Guide Master", badgeDescription: "Complete every guide in Clarify.", symbolName: "trophy.fill", goal: .allGuides),
+        Badge(id: "guide-master", title: "Guide Master", badgeDescription: "Complete every guide in Tech Unknotted.", symbolName: "trophy.fill", goal: .allGuides),
 
         // Breadth across provider sections.
         Badge(id: "provider-explorer", title: "Provider Explorer", badgeDescription: "Complete a guide from every provider.", symbolName: "globe.americas.fill", goal: .providers(Company.allCases.count)),

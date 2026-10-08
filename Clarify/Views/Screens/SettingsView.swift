@@ -2,7 +2,7 @@
 //  SettingsView.swift
 //  Clarify
 //
-//  The one screen in Clarify that talks *about* the app rather than
+//  The one screen in the app that talks *about* the app rather than
 //  walking someone through a task: a reminder of what "no accounts, no
 //  tracking" actually means in practice, and the one genuinely
 //  destructive action in the whole app — wiping local progress —
@@ -18,6 +18,7 @@ struct SettingsView: View {
     @Environment(\.colorScheme) private var colorScheme
     @State private var account = AccountManager()
     @State private var showResetConfirmation = false
+    @State private var showSignOutConfirmation = false
     @State private var didReset = false
 
     private var appVersion: String {
@@ -57,10 +58,30 @@ struct SettingsView: View {
                         : "You haven't started any guides yet, so there's nothing to reset.")
                 }
 
-                Section("About Clarify") {
+                Section {
                     Label("Sign-in is optional and never required to use the app", systemImage: "person.crop.circle.badge.checkmark")
-                    Label("No Clarify account or server exists — ever", systemImage: "antenna.radiowaves.left.and.right.slash")
-                    Label("All progress is stored locally only", systemImage: "internaldrive")
+                    Label("No Tech Unknotted account or server exists", systemImage: "antenna.radiowaves.left.and.right.slash")
+                    Label("All progress is stored on this device only", systemImage: "internaldrive")
+                    Label("Works fully offline", systemImage: "wifi.slash")
+                } header: {
+                    Text("About Tech Unknotted")
+                } footer: {
+                    Text("Tech Unknotted is an independent guide from Glenn's Gaming. It is not affiliated with, endorsed by, or sponsored by Google, Apple, Microsoft, Amazon, or Meta. Product names are used only to describe what each guide covers. Menus on those services change over time, so if a step doesn't match exactly, look for the closest option with a similar name.")
+                }
+
+                if AppLinks.support != nil || AppLinks.privacyPolicy != nil {
+                    Section("Help") {
+                        if let support = AppLinks.support {
+                            Link(destination: support) {
+                                Label("Get Support", systemImage: "questionmark.circle")
+                            }
+                        }
+                        if let privacy = AppLinks.privacyPolicy {
+                            Link(destination: privacy) {
+                                Label("Privacy Policy", systemImage: "hand.raised")
+                            }
+                        }
+                    }
                 }
 
                 Section {
@@ -84,6 +105,18 @@ struct SettingsView: View {
                 Button("Cancel", role: .cancel) {}
             } message: {
                 Text("Your level, XP, streak, badges, and every guide's progress will be cleared. This can't be undone.")
+            }
+            .confirmationDialog(
+                "Sign out and delete your profile?",
+                isPresented: $showSignOutConfirmation,
+                titleVisibility: .visible
+            ) {
+                Button("Sign Out & Delete", role: .destructive) {
+                    account.signOut()
+                }
+                Button("Cancel", role: .cancel) {}
+            } message: {
+                Text("Your name and email are removed from this device. Guide progress, XP, and badges stay as they are.")
             }
             .sensoryFeedback(.warning, trigger: didReset)
         }
@@ -118,9 +151,9 @@ struct SettingsView: View {
                 .accessibilityElement(children: .combine)
 
                 Button(role: .destructive) {
-                    account.signOut()
+                    showSignOutConfirmation = true
                 } label: {
-                    Label("Sign Out", systemImage: "rectangle.portrait.and.arrow.right")
+                    Label("Sign Out & Delete Profile", systemImage: "person.crop.circle.badge.xmark")
                 }
             } else {
                 SignInWithAppleButton(.signIn) { request in
@@ -149,8 +182,8 @@ struct SettingsView: View {
             Text("Account")
         } footer: {
             Text(account.isSignedIn
-                ? "Signing in only personalizes this screen. Your guide progress, XP, and badges were never tied to an account and still aren't — none of it is synced anywhere."
-                : "Completely optional. Sign in with Apple is handled by Apple and only personalizes this screen. Clarify has no account server, and your guide activity never leaves this device.")
+                ? "Signing in only personalizes this screen. Signing out deletes the name and email stored on this device. Your guide progress, XP, and badges were never tied to an account. To also stop Apple sharing your sign-in with this app, open Settings, tap your name, then Sign-In & Security, then Sign in with Apple."
+                : "Completely optional. Sign in with Apple is handled by Apple and only personalizes this screen. There's no account server, and your guide activity never leaves this device.")
         }
     }
 
