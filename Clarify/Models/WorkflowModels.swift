@@ -97,6 +97,9 @@ struct Workflow: Identifiable, Codable, Hashable {
     /// The provider this guide belongs to, or `nil` for a universal guide
     /// (e.g. domain DNS, which isn't specific to any one company).
     let company: Company?
+    /// How hard this guide is, from Very Easy to Very Hard. Drives the
+    /// level badge, the easiest-first sort, and the level filter.
+    let level: GuideLevel
     let steps: [WorkflowStep]
 
     /// Total XP a full, uninterrupted run of this workflow is worth —
@@ -111,6 +114,7 @@ struct Workflow: Identifiable, Codable, Hashable {
         summary: String,
         symbolName: String,
         company: Company? = nil,
+        level: GuideLevel = .medium,
         steps: [WorkflowStep]
     ) {
         let providerKey = company?.rawValue ?? "universal"
@@ -121,6 +125,7 @@ struct Workflow: Identifiable, Codable, Hashable {
         self.summary = summary
         self.symbolName = symbolName
         self.company = company
+        self.level = level
         self.steps = steps.enumerated().map { index, step in
             step.identified(
                 as: StableIdentifier.uuid(
@@ -146,6 +151,7 @@ enum WorkflowLibrary {
         summary: "Connect the name people type to the place your website actually lives.",
         symbolName: "network",
         company: nil,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Find Your Domain's Settings",
@@ -180,6 +186,7 @@ enum WorkflowLibrary {
         summary: "Make sure a stolen password alone isn't enough for someone to break into your accounts.",
         symbolName: "lock.shield.fill",
         company: nil,
+        level: .easy,
         steps: [
             WorkflowStep(
                 title: "Open Your Security Settings",
@@ -212,6 +219,7 @@ enum WorkflowLibrary {
         summary: "Let one trusted vault remember every password for you, so you never have to reuse a weak one again.",
         symbolName: "key.fill",
         company: nil,
+        level: .easy,
         steps: [
             WorkflowStep(
                 title: "Pick Your Vault",
@@ -244,6 +252,7 @@ enum WorkflowLibrary {
         summary: "Wrap your internet traffic so no one else on the network can peek at what you're sending.",
         symbolName: "bolt.shield.fill",
         company: nil,
+        level: .medium,
         steps: [
             WorkflowStep(
                 title: "Choose a Trusted Provider",
@@ -275,6 +284,7 @@ enum WorkflowLibrary {
         summary: "Get your home network up, named, and locked down so only your household can use it.",
         symbolName: "wifi",
         company: nil,
+        level: .medium,
         steps: [
             WorkflowStep(
                 title: "Plug In and Power Up",
@@ -313,6 +323,7 @@ enum WorkflowLibrary {
         summary: "Keep the same files current across every device automatically, without emailing anything to yourself.",
         symbolName: "cloud.fill",
         company: nil,
+        level: .easy,
         steps: [
             WorkflowStep(
                 title: "Install the Sync App",
@@ -345,6 +356,7 @@ enum WorkflowLibrary {
         summary: "Save the pages you love once and have them waiting on every device you own.",
         symbolName: "star.fill",
         company: nil,
+        level: .easy,
         steps: [
             WorkflowStep(
                 title: "Sign In to Your Browser",
@@ -376,6 +388,7 @@ enum WorkflowLibrary {
         summary: "Prove to other mail providers that emails from your domain really are from you, not an impersonator.",
         symbolName: "envelope.badge.fill",
         company: nil,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Find Your Domain's Settings",
@@ -410,6 +423,7 @@ enum WorkflowLibrary {
         summary: "Give search engines a map of your site and clear instructions on what to explore.",
         symbolName: "magnifyingglass.circle.fill",
         company: nil,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Create Your Site's Map",
@@ -443,6 +457,7 @@ enum WorkflowLibrary {
         summary: "Add the tiny logo that shows up in browser tabs so your site looks finished and trustworthy.",
         symbolName: "photo.fill",
         company: nil,
+        level: .medium,
         steps: [
             WorkflowStep(
                 title: "Design a Simple Square Icon",
@@ -474,6 +489,7 @@ enum WorkflowLibrary {
         summary: "Turn a link, menu, or contact card into a pattern anyone's camera can scan in a second.",
         symbolName: "camera.fill",
         company: nil,
+        level: .easy,
         steps: [
             WorkflowStep(
                 title: "Decide What It Should Open",
@@ -505,6 +521,7 @@ enum WorkflowLibrary {
         summary: "Add a few quiet trip-wires so real visitors get through but automated spam doesn't.",
         symbolName: "hand.raised.fill",
         company: nil,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Add a Human Check",
@@ -537,6 +554,7 @@ enum WorkflowLibrary {
         summary: "Have a tireless watcher check that your website is alive, so you hear about outages before your customers do.",
         symbolName: "chart.line.uptrend.xyaxis",
         company: nil,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Choose a Monitoring Service",
@@ -569,6 +587,7 @@ enum WorkflowLibrary {
         summary: "Use your face, fingerprint, or screen lock instead of typing a password that can be stolen.",
         symbolName: "faceid",
         company: nil,
+        level: .easy,
         steps: [
             WorkflowStep(
                 title: "Find Your Account's Sign-In Settings",
@@ -604,6 +623,7 @@ enum WorkflowLibrary {
         summary: "Add a small physical device that has to be present before anyone can sign in as you.",
         symbolName: "key.fill",
         company: nil,
+        level: .medium,
         steps: [
             WorkflowStep(
                 title: "Buy a Compatible Security Key",
@@ -639,6 +659,7 @@ enum WorkflowLibrary {
         summary: "Let visitors get online without giving them a way onto your own devices.",
         symbolName: "wifi.circle.fill",
         company: nil,
+        level: .medium,
         steps: [
             WorkflowStep(
                 title: "Open Your Router's Settings",
@@ -674,6 +695,7 @@ enum WorkflowLibrary {
         summary: "Protect your photos and documents so one bad accident can never take everything at once.",
         symbolName: "externaldrive.fill.badge.checkmark",
         company: nil,
+        level: .medium,
         steps: [
             WorkflowStep(
                 title: "Keep Three Copies of Anything That Matters",
@@ -708,6 +730,7 @@ enum WorkflowLibrary {
         summary: "Trim down browser add-ons so fewer of them have a window into your browsing.",
         symbolName: "puzzlepiece.extension.fill",
         company: nil,
+        level: .medium,
         steps: [
             WorkflowStep(
                 title: "Open Your Browser's Extensions List",
@@ -743,6 +766,7 @@ enum WorkflowLibrary {
         summary: "Ask visitors before tracking them, and stay on the right side of privacy rules.",
         symbolName: "hand.raised.square.fill",
         company: nil,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Decide What You're Tracking",
@@ -777,6 +801,7 @@ enum WorkflowLibrary {
         summary: "Hand search engines a map of your site so they can find and index every page.",
         symbolName: "map.fill",
         company: nil,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Generate Your Sitemap",
@@ -811,6 +836,7 @@ enum WorkflowLibrary {
         summary: "Hand out extra addresses that all land safely in your one real inbox.",
         symbolName: "envelope.badge.fill",
         company: nil,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Open Your Domain's Email Settings",
@@ -846,6 +872,7 @@ enum WorkflowLibrary {
         summary: "Get a new gadget online without giving it a straight line to your other devices.",
         symbolName: "house.and.flag.fill",
         company: nil,
+        level: .medium,
         steps: [
             WorkflowStep(
                 title: "Put New Devices on Their Own Network",
@@ -880,6 +907,7 @@ enum WorkflowLibrary {
         summary: "Set devices and accounts to sign out on their own so a forgotten login can't be misused.",
         symbolName: "lock.badge.clock.fill",
         company: nil,
+        level: .easy,
         steps: [
             WorkflowStep(
                 title: "Open Your Device's Lock Settings",
@@ -915,6 +943,7 @@ enum WorkflowLibrary {
         summary: "Give your child a device they can enjoy inside limits you're comfortable with.",
         symbolName: "hourglass.badge.plus",
         company: nil,
+        level: .easy,
         steps: [
             WorkflowStep(
                 title: "Create a Child Account",
@@ -949,6 +978,7 @@ enum WorkflowLibrary {
         summary: "Turn a long, messy web address into something short and memorable you can hand out anywhere.",
         symbolName: "link.circle.fill",
         company: nil,
+        level: .medium,
         steps: [
             WorkflowStep(
                 title: "Pick a Link Shortening Service",
@@ -983,6 +1013,7 @@ enum WorkflowLibrary {
         summary: "Let readers subscribe once and automatically get every new post you publish.",
         symbolName: "dot.radiowaves.up.forward",
         company: nil,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Check If Your Site Already Has One",
@@ -1017,6 +1048,7 @@ enum WorkflowLibrary {
         summary: "Lock your entire hard drive so a lost or stolen computer can't be read by anyone else.",
         symbolName: "lock.laptopcomputer",
         company: nil,
+        level: .medium,
         steps: [
             WorkflowStep(
                 title: "Open Your Security Settings",
@@ -1060,6 +1092,7 @@ enum WorkflowLibrary {
         summary: "Teach your inbox to catch spam automatically and stop trusted senders from getting buried.",
         symbolName: "envelope.badge.shield.half.filled",
         company: nil,
+        level: .easy,
         steps: [
             WorkflowStep(
                 title: "Open Your Mail Settings",
@@ -1106,6 +1139,7 @@ enum WorkflowLibrary {
         summary: "Replace the default broken-link error with a friendly page that helps lost visitors find their way.",
         symbolName: "questionmark.folder",
         company: nil,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Understand What Visitors See",
@@ -1146,6 +1180,7 @@ enum WorkflowLibrary {
         summary: "Give users one place to check whether your service is up, so they don't have to guess or email you.",
         symbolName: "chart.bar.xaxis",
         company: nil,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Choose A Status Page Tool",
@@ -1187,6 +1222,7 @@ enum WorkflowLibrary {
         summary: "Copy something on your phone and paste it straight onto your computer, no email-to-yourself required.",
         symbolName: "doc.on.clipboard",
         company: nil,
+        level: .easy,
         steps: [
             WorkflowStep(
                 title: "Sign In With The Same Account Everywhere",
@@ -1229,6 +1265,7 @@ enum WorkflowLibrary {
         summary: "Stop ads and hidden trackers from following you around the web, right inside your browser.",
         symbolName: "shield.lefthalf.filled",
         company: nil,
+        level: .easy,
         steps: [
             WorkflowStep(
                 title: "Understand What Trackers Do",
@@ -1270,6 +1307,7 @@ enum WorkflowLibrary {
         summary: "Create a safety net so you can still get into your account if you ever lose your phone.",
         symbolName: "key.viewfinder",
         company: nil,
+        level: .easy,
         steps: [
             WorkflowStep(
                 title: "Open Your Account's Security Settings",
@@ -1311,6 +1349,7 @@ enum WorkflowLibrary {
         summary: "Keep passwords, ID numbers, and private thoughts in a notes app that only you can unlock.",
         symbolName: "note.text.badge.plus",
         company: nil,
+        level: .medium,
         steps: [
             WorkflowStep(
                 title: "Choose A Notes App With Encryption",
@@ -1352,6 +1391,7 @@ enum WorkflowLibrary {
         summary: "Add a few hidden tags so your website shows a title, image, and description when pasted into a chat or post.",
         symbolName: "rectangle.and.text.magnifyingglass",
         company: nil,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Understand What Open Graph Tags Do",
@@ -1393,6 +1433,7 @@ enum WorkflowLibrary {
         summary: "Give supporters a simple link where they can send you a few dollars, no storefront required.",
         symbolName: "cup.and.saucer.fill",
         company: nil,
+        level: .medium,
         steps: [
             WorkflowStep(
                 title: "Choose A Tip Jar Service",
@@ -1434,6 +1475,7 @@ enum WorkflowLibrary {
         summary: "Let your devices quietly install security fixes in the background instead of you remembering to check.",
         symbolName: "arrow.triangle.2.circlepath.circle",
         company: nil,
+        level: .easy,
         steps: [
             WorkflowStep(
                 title: "Open Your Software Update Settings",
@@ -1476,6 +1518,7 @@ enum WorkflowLibrary {
         summary: "Close the easy doors into your home network by updating firmware, changing default passwords, and locking down remote access.",
         symbolName: "lock.shield",
         company: nil,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Log Into Your Router's Admin Page",
@@ -1519,6 +1562,7 @@ enum WorkflowLibrary {
         summary: "Clear out duplicate files and shut down accounts you no longer use before they become a security risk.",
         symbolName: "externaldrive.badge.minus",
         company: nil,
+        level: .medium,
         steps: [
             WorkflowStep(
                 title: "Check Your Storage Quota",
@@ -1562,6 +1606,7 @@ enum WorkflowLibrary {
         summary: "Assemble the building blocks a Google Cloud app needs to run.",
         symbolName: "server.rack",
         company: .google,
+        level: .veryHard,
         steps: [
             WorkflowStep(
                 title: "Find the Console",
@@ -1598,6 +1643,7 @@ enum WorkflowLibrary {
         summary: "Prove a site is yours so Google will show you how it performs in Search.",
         symbolName: "checkmark.seal.text.page.fill",
         company: .google,
+        level: .medium,
         steps: [
             WorkflowStep(
                 title: "Add Your Property",
@@ -1627,6 +1673,7 @@ enum WorkflowLibrary {
         summary: "Route your company's email through Gmail using a domain name you already own.",
         symbolName: "envelope.fill",
         company: .google,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Add Your Domain",
@@ -1662,6 +1709,7 @@ enum WorkflowLibrary {
         summary: "Start counting who visits your website and what they do while they're there.",
         symbolName: "chart.bar.fill",
         company: .google,
+        level: .medium,
         steps: [
             WorkflowStep(
                 title: "Create Your Property",
@@ -1696,6 +1744,7 @@ enum WorkflowLibrary {
         summary: "Find out which ads actually lead to a sale or a sign-up.",
         symbolName: "target",
         company: .google,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Create a Conversion Action",
@@ -1729,6 +1778,7 @@ enum WorkflowLibrary {
         summary: "Set up email and tools for a new hire without touching anyone else's account.",
         symbolName: "person.badge.plus.fill",
         company: .google,
+        level: .medium,
         steps: [
             WorkflowStep(
                 title: "Open the Roster",
@@ -1762,6 +1812,7 @@ enum WorkflowLibrary {
         summary: "Let the right people see or edit your files without handing over the whole cabinet.",
         symbolName: "folder.fill",
         company: .google,
+        level: .easy,
         steps: [
             WorkflowStep(
                 title: "Open the Folder's Lock",
@@ -1795,6 +1846,7 @@ enum WorkflowLibrary {
         summary: "Assemble the app-building blocks Firebase offers before you write a line of code.",
         symbolName: "cube.fill",
         company: .google,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Create the Project",
@@ -1831,6 +1883,7 @@ enum WorkflowLibrary {
         summary: "Put together the storefront page people see right before they download your app.",
         symbolName: "storefront.fill",
         company: .google,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Open Your App's Storefront",
@@ -1864,6 +1917,7 @@ enum WorkflowLibrary {
         summary: "Unlock the ability to show maps inside your own app or website.",
         symbolName: "map.fill",
         company: .google,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Turn On the Maps Toolkit",
@@ -1897,6 +1951,7 @@ enum WorkflowLibrary {
         summary: "Give your channel a consistent look before you publish your first video.",
         symbolName: "video.fill",
         company: .google,
+        level: .medium,
         steps: [
             WorkflowStep(
                 title: "Open Your Channel's Dressing Room",
@@ -1930,6 +1985,7 @@ enum WorkflowLibrary {
         summary: "Organize all your website's tracking tags in one tidy toolbox.",
         symbolName: "list.bullet.rectangle.fill",
         company: .google,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Create Your Container",
@@ -1965,6 +2021,7 @@ enum WorkflowLibrary {
         summary: "Prove your business is real so it can show up on Google Maps and Search.",
         symbolName: "building.columns.fill",
         company: .google,
+        level: .medium,
         steps: [
             WorkflowStep(
                 title: "Claim Your Storefront",
@@ -1998,6 +2055,7 @@ enum WorkflowLibrary {
         summary: "Keep bots out of your forms without making real visitors jump through hoops.",
         symbolName: "checkmark.shield.fill",
         company: .google,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Register Your Site",
@@ -2031,6 +2089,7 @@ enum WorkflowLibrary {
         summary: "Put your business in front of people searching for exactly what you sell.",
         symbolName: "megaphone.fill",
         company: .google,
+        level: .medium,
         steps: [
             WorkflowStep(
                 title: "Pick Your Goal",
@@ -2066,6 +2125,7 @@ enum WorkflowLibrary {
         summary: "Let others see when you're free and grab a slot without the back-and-forth emails.",
         symbolName: "calendar.badge.clock",
         company: .google,
+        level: .easy,
         steps: [
             WorkflowStep(
                 title: "Open Calendar Settings",
@@ -2100,6 +2160,7 @@ enum WorkflowLibrary {
         summary: "Gather answers, sign-ups, or feedback from anyone with a simple shareable form.",
         symbolName: "list.clipboard.fill",
         company: .google,
+        level: .easy,
         steps: [
             WorkflowStep(
                 title: "Start a New Form",
@@ -2134,6 +2195,7 @@ enum WorkflowLibrary {
         summary: "Give your app's users a safe way to create accounts and log back in.",
         symbolName: "person.badge.key.fill",
         company: .google,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Open Authentication",
@@ -2169,6 +2231,7 @@ enum WorkflowLibrary {
         summary: "Reach your app's users with alerts even when they're not inside the app.",
         symbolName: "bell.badge.fill",
         company: .google,
+        level: .veryHard,
         steps: [
             WorkflowStep(
                 title: "Connect Your App",
@@ -2203,6 +2266,7 @@ enum WorkflowLibrary {
         summary: "Give your team one email address that reaches everyone on it at once.",
         symbolName: "person.3.fill",
         company: .google,
+        level: .medium,
         steps: [
             WorkflowStep(
                 title: "Create a New Group",
@@ -2237,6 +2301,7 @@ enum WorkflowLibrary {
         summary: "Get your products showing up when shoppers search for what you sell.",
         symbolName: "cart.fill",
         company: .google,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Create Your Merchant Account",
@@ -2271,6 +2336,7 @@ enum WorkflowLibrary {
         summary: "Let your app or script fetch video stats and playlists straight from YouTube.",
         symbolName: "play.rectangle.fill",
         company: .google,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Turn On the YouTube API",
@@ -2305,6 +2371,7 @@ enum WorkflowLibrary {
         summary: "Install one snippet that lets Google's tools measure what happens on your site.",
         symbolName: "chevron.left.forwardslash.chevron.right",
         company: .google,
+        level: .medium,
         steps: [
             WorkflowStep(
                 title: "Get Your Tag ID",
@@ -2340,6 +2407,7 @@ enum WorkflowLibrary {
         summary: "Get your app live on the internet without managing a single server.",
         symbolName: "shippingbox.fill",
         company: .google,
+        level: .veryHard,
         steps: [
             WorkflowStep(
                 title: "Package Your App",
@@ -2375,6 +2443,7 @@ enum WorkflowLibrary {
         summary: "Serve images and downloads fast to visitors anywhere in the world.",
         symbolName: "bolt.horizontal.circle.fill",
         company: .google,
+        level: .veryHard,
         steps: [
             WorkflowStep(
                 title: "Create a Storage Bucket",
@@ -2410,6 +2479,7 @@ enum WorkflowLibrary {
         summary: "Give your whole team one shared home for files that doesn't disappear when someone leaves.",
         symbolName: "externaldrive.fill.badge.person.crop",
         company: .google,
+        level: .medium,
         steps: [
             WorkflowStep(
                 title: "Create the Shared Drive",
@@ -2443,6 +2513,7 @@ enum WorkflowLibrary {
         summary: "Have Google Cloud tap you on the shoulder before a surprise bill shows up.",
         symbolName: "exclamationmark.triangle.fill",
         company: .google,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Open Billing",
@@ -2477,6 +2548,7 @@ enum WorkflowLibrary {
         summary: "Teach your Analytics property to notice specific actions people take, like button clicks or form submissions, instead of just page views.",
         symbolName: "chart.bar.xaxis",
         company: .google,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Open Your Analytics Property",
@@ -2525,6 +2597,7 @@ enum WorkflowLibrary {
         summary: "Nudge Google to revisit a page you just published or fixed, instead of waiting for it to notice on its own.",
         symbolName: "magnifyingglass",
         company: .google,
+        level: .medium,
         steps: [
             WorkflowStep(
                 title: "Open Search Console",
@@ -2566,6 +2639,7 @@ enum WorkflowLibrary {
         summary: "Get your app in front of a small trusted group before it ever reaches the public Play Store listing.",
         symbolName: "checkmark.shield",
         company: .google,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Create the Testing Track",
@@ -2606,6 +2680,7 @@ enum WorkflowLibrary {
         summary: "Set up a messaging channel where one part of your system can announce events and other parts can listen in, without talking to each other directly.",
         symbolName: "antenna.radiowaves.left.and.right",
         company: .google,
+        level: .veryHard,
         steps: [
             WorkflowStep(
                 title: "Create a Topic",
@@ -2647,6 +2722,7 @@ enum WorkflowLibrary {
         summary: "Spin up a fully managed database server so you don't have to install, patch, or babysit the database software yourself.",
         symbolName: "cylinder.split.1x2",
         company: .google,
+        level: .veryHard,
         steps: [
             WorkflowStep(
                 title: "Create a Cloud SQL Instance",
@@ -2693,6 +2769,7 @@ enum WorkflowLibrary {
         summary: "Set up a job that runs itself on a timer, like a cloud version of setting an alarm clock for your code.",
         symbolName: "clock.arrow.circlepath",
         company: .google,
+        level: .veryHard,
         steps: [
             WorkflowStep(
                 title: "Create a Scheduled Job",
@@ -2731,6 +2808,7 @@ enum WorkflowLibrary {
         summary: "Decide who is allowed to read and write your app's data before anyone else can peek at or edit it.",
         symbolName: "lock.doc",
         company: .google,
+        level: .veryHard,
         steps: [
             WorkflowStep(
                 title: "Open the Rules Editor",
@@ -2776,6 +2854,7 @@ enum WorkflowLibrary {
         summary: "Change how your app behaves for users who already have it installed, without shipping a brand-new app update.",
         symbolName: "flag.checkered",
         company: .google,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Open Your Firebase Project",
@@ -2816,6 +2895,7 @@ enum WorkflowLibrary {
         summary: "Preserve emails and files for as long as your company or a legal case requires, even if someone tries to delete them.",
         symbolName: "archivebox",
         company: .google,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Open Vault from the Admin Console",
@@ -2857,6 +2937,7 @@ enum WorkflowLibrary {
         summary: "Show ads specifically to people who already visited your site, instead of starting from scratch with strangers.",
         symbolName: "person.crop.circle.badge.clock",
         company: .google,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Add the Ads Tag to Your Site",
@@ -2896,6 +2977,7 @@ enum WorkflowLibrary {
         summary: "Set up a traffic director that sends visitors to whichever server has room, so no single machine gets overwhelmed.",
         symbolName: "arrow.triangle.branch",
         company: .google,
+        level: .veryHard,
         steps: [
             WorkflowStep(
                 title: "Define a Backend Service",
@@ -2938,6 +3020,7 @@ enum WorkflowLibrary {
         summary: "Let visitors log into your site using their existing Google account instead of creating yet another password.",
         symbolName: "person.badge.key",
         company: .google,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Configure the Consent Screen",
@@ -2978,6 +3061,7 @@ enum WorkflowLibrary {
         summary: "Turn raw spreadsheet or analytics numbers into a live report you can hand to anyone, without them needing a login to your data.",
         symbolName: "chart.pie",
         company: .google,
+        level: .medium,
         steps: [
             WorkflowStep(
                 title: "Connect a Data Source",
@@ -3020,6 +3104,7 @@ enum WorkflowLibrary {
         summary: "Take a build from your computer to testers' devices.",
         symbolName: "airplane.circle.fill",
         company: .apple,
+        level: .medium,
         steps: [
             WorkflowStep(
                 title: "Give Your App a Name Tag",
@@ -3049,6 +3134,7 @@ enum WorkflowLibrary {
         summary: "Let your app send timely alerts, the right way.",
         symbolName: "bell.badge.fill",
         company: .apple,
+        level: .veryHard,
         steps: [
             WorkflowStep(
                 title: "Request the License",
@@ -3072,6 +3158,7 @@ enum WorkflowLibrary {
         summary: "Turn your app into something people want to tap on.",
         symbolName: "list.bullet.rectangle.fill",
         company: .apple,
+        level: .medium,
         steps: [
             WorkflowStep(
                 title: "Open Your App's Storefront",
@@ -3113,6 +3200,7 @@ enum WorkflowLibrary {
         summary: "Let people pay for something extra without ever leaving your app.",
         symbolName: "cart.fill",
         company: .apple,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Decide What You're Selling",
@@ -3152,6 +3240,7 @@ enum WorkflowLibrary {
         summary: "Give people a one-tap, privacy-friendly way to log in.",
         symbolName: "person.crop.circle.fill",
         company: .apple,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Flip the Switch on Your App ID",
@@ -3187,6 +3276,7 @@ enum WorkflowLibrary {
         summary: "Show off your app before anyone has even opened it.",
         symbolName: "photo.fill",
         company: .apple,
+        level: .medium,
         steps: [
             WorkflowStep(
                 title: "Capture Every Screen Size",
@@ -3219,6 +3309,7 @@ enum WorkflowLibrary {
         summary: "Bring in testers beyond your own team.",
         symbolName: "person.3.fill",
         company: .apple,
+        level: .medium,
         steps: [
             WorkflowStep(
                 title: "Build the Guest List",
@@ -3252,6 +3343,7 @@ enum WorkflowLibrary {
         summary: "Let Apple's servers build and test your app automatically.",
         symbolName: "cloud.fill",
         company: .apple,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Connect the Assembly Line",
@@ -3284,6 +3376,7 @@ enum WorkflowLibrary {
         summary: "Let your tools talk to App Store Connect without typing a password.",
         symbolName: "key.fill",
         company: .apple,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Decide Who Gets the Key",
@@ -3317,6 +3410,7 @@ enum WorkflowLibrary {
         summary: "Tell people exactly what data your app collects, up front.",
         symbolName: "lock.shield.fill",
         company: .apple,
+        level: .medium,
         steps: [
             WorkflowStep(
                 title: "Take Inventory",
@@ -3350,6 +3444,7 @@ enum WorkflowLibrary {
         summary: "Make a website link open straight into your app.",
         symbolName: "network",
         company: .apple,
+        level: .veryHard,
         steps: [
             WorkflowStep(
                 title: "Turn On the Capability",
@@ -3385,6 +3480,7 @@ enum WorkflowLibrary {
         summary: "Give your app its own private storage locker in iCloud.",
         symbolName: "cloud.fill",
         company: .apple,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Reserve the Storage Unit",
@@ -3420,6 +3516,7 @@ enum WorkflowLibrary {
         summary: "Offer tiers of a subscription without confusing anyone.",
         symbolName: "creditcard.fill",
         company: .apple,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Set Up the Membership Tiers",
@@ -3458,6 +3555,7 @@ enum WorkflowLibrary {
         summary: "Give your team the right keys without handing over everything.",
         symbolName: "person.2.fill",
         company: .apple,
+        level: .medium,
         steps: [
             WorkflowStep(
                 title: "Decide Who Needs What",
@@ -3491,6 +3589,7 @@ enum WorkflowLibrary {
         summary: "Get the paid membership that unlocks App Store distribution and all of Apple's developer tools.",
         symbolName: "person.badge.key.fill",
         company: .apple,
+        level: .medium,
         steps: [
             WorkflowStep(
                 title: "Pick Individual or Organization",
@@ -3524,6 +3623,7 @@ enum WorkflowLibrary {
         summary: "Take manual control of the certificate and profile that let your app run on real devices and ship to the store.",
         symbolName: "key.fill",
         company: .apple,
+        level: .veryHard,
         steps: [
             WorkflowStep(
                 title: "Generate a Signing Request",
@@ -3560,6 +3660,7 @@ enum WorkflowLibrary {
         summary: "Prompt happy users for a star rating at the right moment, without being annoying about it.",
         symbolName: "star.bubble.fill",
         company: .apple,
+        level: .medium,
         steps: [
             WorkflowStep(
                 title: "Pick the Right Moment",
@@ -3592,6 +3693,7 @@ enum WorkflowLibrary {
         summary: "Choose the search terms that help the right people discover your app.",
         symbolName: "magnifyingglass",
         company: .apple,
+        level: .medium,
         steps: [
             WorkflowStep(
                 title: "Brainstorm Search Terms",
@@ -3624,6 +3726,7 @@ enum WorkflowLibrary {
         summary: "Turn a ticket, card, or coupon into something people can save right in Wallet on their iPhone.",
         symbolName: "wallet.pass.fill",
         company: .apple,
+        level: .veryHard,
         steps: [
             WorkflowStep(
                 title: "Register a Pass Type",
@@ -3658,6 +3761,7 @@ enum WorkflowLibrary {
         summary: "Give your app a bite-sized view that lives right on the user's Home Screen.",
         symbolName: "square.grid.2x2.fill",
         company: .apple,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Add a Widget Extension",
@@ -3690,6 +3794,7 @@ enum WorkflowLibrary {
         summary: "Let people try a tiny slice of your app instantly, without installing the whole thing.",
         symbolName: "bolt.circle.fill",
         company: .apple,
+        level: .veryHard,
         steps: [
             WorkflowStep(
                 title: "Add an App Clip Target",
@@ -3722,6 +3827,7 @@ enum WorkflowLibrary {
         summary: "Add leaderboards and achievements so players can compete and show off progress.",
         symbolName: "gamecontroller.fill",
         company: .apple,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Turn On Game Center",
@@ -3757,6 +3863,7 @@ enum WorkflowLibrary {
         summary: "Let one subscriber share access with their whole family at no extra cost to them.",
         symbolName: "person.3.fill",
         company: .apple,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Enable Family Sharing",
@@ -3789,6 +3896,7 @@ enum WorkflowLibrary {
         summary: "Hand out redeemable codes that give new or returning subscribers a special deal.",
         symbolName: "gift.fill",
         company: .apple,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Create an Offer",
@@ -3822,6 +3930,7 @@ enum WorkflowLibrary {
         summary: "Let eager users reserve your app now so it lands on their phone the moment it launches.",
         symbolName: "calendar.badge.clock",
         company: .apple,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Turn On Pre-Order",
@@ -3855,6 +3964,7 @@ enum WorkflowLibrary {
         summary: "Give people quick actions — like Reply or Mark Done — right from a notification banner.",
         symbolName: "bell.badge.fill",
         company: .apple,
+        level: .veryHard,
         steps: [
             WorkflowStep(
                 title: "Define a Notification Category",
@@ -3887,6 +3997,7 @@ enum WorkflowLibrary {
         summary: "Define the record types and fields your app's data will live in, before you write a line of syncing code.",
         symbolName: "externaldrive.fill.badge.icloud",
         company: .apple,
+        level: .veryHard,
         steps: [
             WorkflowStep(
                 title: "Open the CloudKit Dashboard",
@@ -3926,6 +4037,7 @@ enum WorkflowLibrary {
         summary: "Find out why your app is crashing for testers before it ever reaches real customers.",
         symbolName: "exclamationmark.triangle",
         company: .apple,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Open the Crashes Tab",
@@ -3974,6 +4086,7 @@ enum WorkflowLibrary {
         summary: "Double-check every in-app purchase with Apple's servers so you never grant something that wasn't actually paid for.",
         symbolName: "checkmark.shield",
         company: .apple,
+        level: .veryHard,
         steps: [
             WorkflowStep(
                 title: "Get the Transaction from the Device",
@@ -4021,6 +4134,7 @@ enum WorkflowLibrary {
         summary: "Have Apple ping your server the moment a subscriber renews, cancels, or asks for a refund.",
         symbolName: "bell.badge",
         company: .apple,
+        level: .veryHard,
         steps: [
             WorkflowStep(
                 title: "Build a Webhook Endpoint",
@@ -4069,6 +4183,7 @@ enum WorkflowLibrary {
         summary: "Turn on HealthKit for your app and request only the health information you actually need.",
         symbolName: "heart.text.square",
         company: .apple,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Turn On the HealthKit Entitlement",
@@ -4111,6 +4226,7 @@ enum WorkflowLibrary {
         summary: "Turn a feature of your app into something people can ask Siri or the Shortcuts app to do for them.",
         symbolName: "mic.circle",
         company: .apple,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Define What the Action Does",
@@ -4152,6 +4268,7 @@ enum WorkflowLibrary {
         summary: "Keep users updated in real time with a Live Activity that lives right on their Lock Screen and Dynamic Island.",
         symbolName: "bolt.badge.clock",
         company: .apple,
+        level: .veryHard,
         steps: [
             WorkflowStep(
                 title: "Design the Activity Layout",
@@ -4199,6 +4316,7 @@ enum WorkflowLibrary {
         summary: "Answer a short questionnaire so the App Store can show your app the right age rating for its content.",
         symbolName: "person.2.badge.gearshape",
         company: .apple,
+        level: .medium,
         steps: [
             WorkflowStep(
                 title: "Open the Age Rating Questionnaire",
@@ -4241,6 +4359,7 @@ enum WorkflowLibrary {
         summary: "Tell shoppers about a challenge, premiere, or limited-time event happening in your app right from its Store listing.",
         symbolName: "calendar.badge.clock",
         company: .apple,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Pick an Event Type",
@@ -4288,6 +4407,7 @@ enum WorkflowLibrary {
         summary: "Show different screenshots and text to different visitors, then keep whichever version convinces more people to download.",
         symbolName: "rectangle.on.rectangle.badge.gearshape",
         company: .apple,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Duplicate Your Default Product Page",
@@ -4335,6 +4455,7 @@ enum WorkflowLibrary {
         summary: "Get your company ready to buy apps in bulk and hand out preconfigured devices without touching each one by hand.",
         symbolName: "building.2",
         company: .apple,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Enroll Your Organization",
@@ -4382,6 +4503,7 @@ enum WorkflowLibrary {
         summary: "Generate the key your website needs to show a real, interactive Apple Maps view instead of a static image.",
         symbolName: "map",
         company: .apple,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Turn On MapKit JS in Your Account",
@@ -4429,6 +4551,7 @@ enum WorkflowLibrary {
         summary: "Let a person start something on their iPhone and pick it up right where they left off on their iPad or Mac.",
         symbolName: "arrow.triangle.2.circlepath.circle",
         company: .apple,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Turn On the Handoff Capability",
@@ -4471,6 +4594,7 @@ enum WorkflowLibrary {
         summary: "Have App Store Connect notify your own systems the instant something important happens, like a new review or a build issue.",
         symbolName: "antenna.radiowaves.left.and.right",
         company: .apple,
+        level: .veryHard,
         steps: [
             WorkflowStep(
                 title: "Generate an API Key for Notifications",
@@ -4521,6 +4645,7 @@ enum WorkflowLibrary {
         summary: "Assemble the pieces an Azure app needs, inside the right filing cabinet.",
         symbolName: "server.rack",
         company: .microsoft,
+        level: .veryHard,
         steps: [
             WorkflowStep(
                 title: "Find Your Office Building",
@@ -4558,6 +4683,7 @@ enum WorkflowLibrary {
         summary: "Connect your own domain name to your Microsoft 365 mailboxes.",
         symbolName: "envelope.badge.shield.half.filled.fill",
         company: .microsoft,
+        level: .medium,
         steps: [
             WorkflowStep(
                 title: "Add Your Domain",
@@ -4587,6 +4713,7 @@ enum WorkflowLibrary {
         summary: "Build a shared clubhouse where your team chats, meets, and shares files in one place.",
         symbolName: "person.3.fill",
         company: .microsoft,
+        level: .medium,
         steps: [
             WorkflowStep(
                 title: "Create Your Team",
@@ -4622,6 +4749,7 @@ enum WorkflowLibrary {
         summary: "Build a shared filing room your whole team can open from anywhere.",
         symbolName: "folder.fill",
         company: .microsoft,
+        level: .medium,
         steps: [
             WorkflowStep(
                 title: "Choose Your Site Type",
@@ -4657,6 +4785,7 @@ enum WorkflowLibrary {
         summary: "Hand out the right keys to the right files without giving away the whole cabinet.",
         symbolName: "lock.fill",
         company: .microsoft,
+        level: .easy,
         steps: [
             WorkflowStep(
                 title: "Pick What to Share",
@@ -4690,6 +4819,7 @@ enum WorkflowLibrary {
         summary: "Add smart rules that check who's knocking before your office door unlocks.",
         symbolName: "checkmark.shield.fill",
         company: .microsoft,
+        level: .veryHard,
         steps: [
             WorkflowStep(
                 title: "Find the Security Checkpoint",
@@ -4725,6 +4855,7 @@ enum WorkflowLibrary {
         summary: "Give your app's passwords and keys a safe deposit box instead of a sticky note.",
         symbolName: "lock.shield.fill",
         company: .microsoft,
+        level: .veryHard,
         steps: [
             WorkflowStep(
                 title: "Open the Right Filing Cabinet",
@@ -4762,6 +4893,7 @@ enum WorkflowLibrary {
         summary: "Build the warehouse where your app's files and backups will live.",
         symbolName: "archivebox.fill",
         company: .microsoft,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Pick a Filing Cabinet",
@@ -4798,6 +4930,7 @@ enum WorkflowLibrary {
         summary: "Set up a shared drafting table where your team builds and reviews reports together.",
         symbolName: "chart.bar.fill",
         company: .microsoft,
+        level: .medium,
         steps: [
             WorkflowStep(
                 title: "Create Your Workspace",
@@ -4832,6 +4965,7 @@ enum WorkflowLibrary {
         summary: "Set up a row of dominoes so one action automatically tips off the next.",
         symbolName: "bolt.fill",
         company: .microsoft,
+        level: .medium,
         steps: [
             WorkflowStep(
                 title: "Pick What Starts the Flow",
@@ -4867,6 +5001,7 @@ enum WorkflowLibrary {
         summary: "Post a guard at every door instead of just locking the front one.",
         symbolName: "shield.lefthalf.filled",
         company: .microsoft,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Open the Security Center",
@@ -4902,6 +5037,7 @@ enum WorkflowLibrary {
         summary: "Build a shared toolbox where your team's code is stored and tracked.",
         symbolName: "terminal.fill",
         company: .microsoft,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Create a Project",
@@ -4937,6 +5073,7 @@ enum WorkflowLibrary {
         summary: "Set up a sorting clerk who inspects every letter before it's delivered.",
         symbolName: "envelope.badge.fill",
         company: .microsoft,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Open the Mail Room",
@@ -4966,6 +5103,7 @@ enum WorkflowLibrary {
         summary: "Set up new laptops so they configure themselves the moment your team turns them on.",
         symbolName: "laptopcomputer",
         company: .microsoft,
+        level: .veryHard,
         steps: [
             WorkflowStep(
                 title: "Register Your Devices",
@@ -5001,6 +5139,7 @@ enum WorkflowLibrary {
         summary: "Bundle people together so you can hand out access once instead of one person at a time.",
         symbolName: "person.3.fill",
         company: .microsoft,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Open the Groups Page",
@@ -5036,6 +5175,7 @@ enum WorkflowLibrary {
         summary: "Give a whole team one inbox, like info@yourcompany.com, without sharing a single password.",
         symbolName: "envelope.badge.person.crop",
         company: .microsoft,
+        level: .medium,
         steps: [
             WorkflowStep(
                 title: "Create the Mailbox",
@@ -5071,6 +5211,7 @@ enum WorkflowLibrary {
         summary: "Put your web app online on Microsoft's servers without managing a single server yourself.",
         symbolName: "arrowshape.up.circle.fill",
         company: .microsoft,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Create the App Service",
@@ -5111,6 +5252,7 @@ enum WorkflowLibrary {
         summary: "Give your app a reliable place to store and look up information, hosted by Microsoft.",
         symbolName: "cylinder.split.1x2.fill",
         company: .microsoft,
+        level: .veryHard,
         steps: [
             WorkflowStep(
                 title: "Create a SQL Server",
@@ -5145,6 +5287,7 @@ enum WorkflowLibrary {
         summary: "Get a text or email the moment something in your app starts acting up, instead of finding out from an angry customer.",
         symbolName: "waveform.path.ecg",
         company: .microsoft,
+        level: .veryHard,
         steps: [
             WorkflowStep(
                 title: "Create a Log Analytics Workspace",
@@ -5179,6 +5322,7 @@ enum WorkflowLibrary {
         summary: "Make sure only devices that meet your safety rules, like having a passcode, can reach company data.",
         symbolName: "checkmark.shield.fill",
         company: .microsoft,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Open Device Compliance",
@@ -5214,6 +5358,7 @@ enum WorkflowLibrary {
         summary: "Let people log into your app with their Microsoft account instead of making up a new password.",
         symbolName: "person.badge.key.fill",
         company: .microsoft,
+        level: .veryHard,
         steps: [
             WorkflowStep(
                 title: "Register the App",
@@ -5248,6 +5393,7 @@ enum WorkflowLibrary {
         summary: "Turn a spreadsheet or database into a real app with buttons and screens, without writing code.",
         symbolName: "square.and.pencil",
         company: .microsoft,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Start a Blank Canvas",
@@ -5282,6 +5428,7 @@ enum WorkflowLibrary {
         summary: "Collect answers, sign-ups, or feedback from anyone with a simple link, no spreadsheet setup required.",
         symbolName: "list.bullet.clipboard.fill",
         company: .microsoft,
+        level: .easy,
         steps: [
             WorkflowStep(
                 title: "Start a New Form",
@@ -5316,6 +5463,7 @@ enum WorkflowLibrary {
         summary: "Build a private, gated neighborhood in the cloud where your resources can talk to each other safely.",
         symbolName: "network",
         company: .microsoft,
+        level: .veryHard,
         steps: [
             WorkflowStep(
                 title: "Create the Network",
@@ -5350,6 +5498,7 @@ enum WorkflowLibrary {
         summary: "Give your team a private shelf to store the packaged versions of your app, ready to deploy anywhere.",
         symbolName: "shippingbox.fill",
         company: .microsoft,
+        level: .veryHard,
         steps: [
             WorkflowStep(
                 title: "Create the Registry",
@@ -5384,6 +5533,7 @@ enum WorkflowLibrary {
         summary: "Let your team make and receive real phone calls right from Microsoft Teams.",
         symbolName: "phone.fill",
         company: .microsoft,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Get a Calling Plan",
@@ -5419,6 +5569,7 @@ enum WorkflowLibrary {
         summary: "Decide automatically how long emails and files stick around, so nothing important gets deleted too soon or kept too long.",
         symbolName: "archivebox.fill",
         company: .microsoft,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Open the Compliance Center",
@@ -5453,6 +5604,7 @@ enum WorkflowLibrary {
         summary: "Set up Microsoft Defender for Cloud Apps to flag risky sign-ins and block unapproved apps before they cause trouble.",
         symbolName: "shield.lefthalf.filled",
         company: .microsoft,
+        level: .veryHard,
         steps: [
             WorkflowStep(
                 title: "See What Apps Your Team Actually Uses",
@@ -5495,6 +5647,7 @@ enum WorkflowLibrary {
         summary: "Write a small piece of code and let Azure run it automatically without managing a server.",
         symbolName: "bolt.horizontal.circle.fill",
         company: .microsoft,
+        level: .veryHard,
         steps: [
             WorkflowStep(
                 title: "Create a Function App",
@@ -5544,6 +5697,7 @@ enum WorkflowLibrary {
         summary: "Build a no-code workflow that watches for an event and automatically takes action.",
         symbolName: "arrow.triangle.branch",
         company: .microsoft,
+        level: .veryHard,
         steps: [
             WorkflowStep(
                 title: "Create a Logic App",
@@ -5586,6 +5740,7 @@ enum WorkflowLibrary {
         summary: "Create a living workspace where your team can co-edit notes, tasks, and plans in real time.",
         symbolName: "arrow.triangle.2.circlepath",
         company: .microsoft,
+        level: .medium,
         steps: [
             WorkflowStep(
                 title: "Create the Workspace",
@@ -5627,6 +5782,7 @@ enum WorkflowLibrary {
         summary: "Create a company-wide space for employees to ask questions, share updates, and connect across teams.",
         symbolName: "person.3.fill",
         company: .microsoft,
+        level: .medium,
         steps: [
             WorkflowStep(
                 title: "Create the Community",
@@ -5668,6 +5824,7 @@ enum WorkflowLibrary {
         summary: "Set up Azure Front Door to send visitors to the closest, healthiest copy of your app anywhere in the world.",
         symbolName: "globe",
         company: .microsoft,
+        level: .veryHard,
         steps: [
             WorkflowStep(
                 title: "Create a Front Door Profile",
@@ -5716,6 +5873,7 @@ enum WorkflowLibrary {
         summary: "Put a secure, managed front door in front of your API before you hand it to developers.",
         symbolName: "arrow.left.arrow.right.circle.fill",
         company: .microsoft,
+        level: .veryHard,
         steps: [
             WorkflowStep(
                 title: "Create an API Management Instance",
@@ -5764,6 +5922,7 @@ enum WorkflowLibrary {
         summary: "Build permission levels that give people exactly the access they need — no more, no less.",
         symbolName: "lock.shield",
         company: .microsoft,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Open Site Permissions",
@@ -5812,6 +5971,7 @@ enum WorkflowLibrary {
         summary: "Set up Azure Bastion so you can safely connect to a virtual machine straight from the browser — no exposed IP address needed.",
         symbolName: "network.badge.shield.half.filled",
         company: .microsoft,
+        level: .veryHard,
         steps: [
             WorkflowStep(
                 title: "Create a Bastion Subnet",
@@ -5855,6 +6015,7 @@ enum WorkflowLibrary {
         summary: "Create a conversational bot that can answer common questions without writing any code.",
         symbolName: "bubble.left.and.bubble.right.fill",
         company: .microsoft,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Start a New Bot",
@@ -5904,6 +6065,7 @@ enum WorkflowLibrary {
         summary: "Spin up a fast, globally distributed database that can handle huge amounts of traffic.",
         symbolName: "cylinder.split.1x2.fill",
         company: .microsoft,
+        level: .veryHard,
         steps: [
             WorkflowStep(
                 title: "Create a Cosmos DB Account",
@@ -5952,6 +6114,7 @@ enum WorkflowLibrary {
         summary: "Give an employee a full Windows desktop that streams from the cloud to any device they own.",
         symbolName: "desktopcomputer",
         company: .microsoft,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Pick a Cloud PC Size",
@@ -6001,6 +6164,7 @@ enum WorkflowLibrary {
         summary: "Teach Sentinel to watch your logs for a specific danger sign and notify your team the moment it happens.",
         symbolName: "eye.trianglebadge.exclamationmark.fill",
         company: .microsoft,
+        level: .veryHard,
         steps: [
             WorkflowStep(
                 title: "Connect a Data Source",
@@ -6052,6 +6216,7 @@ enum WorkflowLibrary {
         summary: "Turn a storage box into a place the whole internet can visit.",
         symbolName: "globe.americas.fill",
         company: .amazon,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Create a Storage Box",
@@ -6095,6 +6260,7 @@ enum WorkflowLibrary {
         summary: "Hand out keycards instead of sharing one master password.",
         symbolName: "lock.shield.fill",
         company: .amazon,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Write the Rulebook",
@@ -6124,6 +6290,7 @@ enum WorkflowLibrary {
         summary: "Hire Amazon to run your database so you never touch a server rack.",
         symbolName: "cylinder.fill",
         company: .amazon,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Pick Your Filing System",
@@ -6159,6 +6326,7 @@ enum WorkflowLibrary {
         summary: "Hire a handyman who only shows up, and gets paid, when there's a job to do.",
         symbolName: "bolt.fill",
         company: .amazon,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Write the Job",
@@ -6194,6 +6362,7 @@ enum WorkflowLibrary {
         summary: "Give your app a waiting line so nothing gets lost in the rush.",
         symbolName: "tray.full.fill",
         company: .amazon,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Create the Waiting Line",
@@ -6229,6 +6398,7 @@ enum WorkflowLibrary {
         summary: "One announcement, broadcast instantly to every phone and inbox that's listening.",
         symbolName: "bell.badge.fill",
         company: .amazon,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Set Up the Megaphone",
@@ -6264,6 +6434,7 @@ enum WorkflowLibrary {
         summary: "Post a lookout who shouts before the ship actually starts sinking.",
         symbolName: "waveform.path.ecg",
         company: .amazon,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Pick What to Watch",
@@ -6299,6 +6470,7 @@ enum WorkflowLibrary {
         summary: "A filing cabinet that grows extra drawers the moment you need them.",
         symbolName: "folder.fill",
         company: .amazon,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Build the Cabinet",
@@ -6334,6 +6506,7 @@ enum WorkflowLibrary {
         summary: "Fence off your own private neighborhood inside Amazon's data center.",
         symbolName: "network",
         company: .amazon,
+        level: .veryHard,
         steps: [
             WorkflowStep(
                 title: "Draw the Property Line",
@@ -6371,6 +6544,7 @@ enum WorkflowLibrary {
         summary: "Hand Amazon your code and let it build the storefront around it.",
         symbolName: "shippingbox.fill",
         company: .amazon,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Hand Over Your App",
@@ -6406,6 +6580,7 @@ enum WorkflowLibrary {
         summary: "Put a padlock on your website without paying a locksmith.",
         symbolName: "lock.fill",
         company: .amazon,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Request Your Certificate",
@@ -6441,6 +6616,7 @@ enum WorkflowLibrary {
         summary: "Keep your passwords in a vault instead of taped to the monitor.",
         symbolName: "key.horizontal.fill",
         company: .amazon,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Put the Secret in the Vault",
@@ -6476,6 +6652,7 @@ enum WorkflowLibrary {
         summary: "Install security cameras that log every visitor to your account.",
         symbolName: "doc.text.magnifyingglass",
         company: .amazon,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Turn On the Cameras",
@@ -6505,6 +6682,7 @@ enum WorkflowLibrary {
         summary: "Hire extra staff automatically when the store gets busy, send them home when it's quiet.",
         symbolName: "arrow.triangle.2.circlepath",
         company: .amazon,
+        level: .veryHard,
         steps: [
             WorkflowStep(
                 title: "Set the Blueprint",
@@ -6542,6 +6720,7 @@ enum WorkflowLibrary {
         summary: "Serve your website's files from servers close to each visitor, so pages load fast everywhere.",
         symbolName: "network",
         company: .amazon,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Point CloudFront at Your Files",
@@ -6576,6 +6755,7 @@ enum WorkflowLibrary {
         summary: "Buy or manage your domain name and tell the internet exactly where it should send visitors.",
         symbolName: "globe",
         company: .amazon,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Register or Move In Your Domain",
@@ -6616,6 +6796,7 @@ enum WorkflowLibrary {
         summary: "Give apps a single, secure web address to call, instead of talking to your backend directly.",
         symbolName: "door.left.hand.open",
         company: .amazon,
+        level: .veryHard,
         steps: [
             WorkflowStep(
                 title: "Create Your API",
@@ -6655,6 +6836,7 @@ enum WorkflowLibrary {
         summary: "Give your app secure sign-up and sign-in screens without building your own password system.",
         symbolName: "person.badge.key.fill",
         company: .amazon,
+        level: .veryHard,
         steps: [
             WorkflowStep(
                 title: "Create a User Pool",
@@ -6694,6 +6876,7 @@ enum WorkflowLibrary {
         summary: "Describe all the AWS resources your app needs in one file, then let AWS build them automatically.",
         symbolName: "doc.text.magnifyingglass",
         company: .amazon,
+        level: .veryHard,
         steps: [
             WorkflowStep(
                 title: "Write Your Template",
@@ -6732,6 +6915,7 @@ enum WorkflowLibrary {
         summary: "Send confirmation emails, receipts, and alerts from your own domain without running a mail server.",
         symbolName: "envelope.fill",
         company: .amazon,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Verify Your Sending Identity",
@@ -6771,6 +6955,7 @@ enum WorkflowLibrary {
         summary: "Have AWS watch for things happening — like a new file or a scheduled time — and kick off actions for you.",
         symbolName: "bolt.horizontal.circle.fill",
         company: .amazon,
+        level: .veryHard,
         steps: [
             WorkflowStep(
                 title: "Pick Your Event Bus",
@@ -6810,6 +6995,7 @@ enum WorkflowLibrary {
         summary: "Set a spending limit and get an email the moment your AWS costs start creeping past it.",
         symbolName: "dollarsign.circle.fill",
         company: .amazon,
+        level: .medium,
         steps: [
             WorkflowStep(
                 title: "Set Your Spending Limit",
@@ -6842,6 +7028,7 @@ enum WorkflowLibrary {
         summary: "Hand incoming visitors off to whichever server has room, so no single machine gets overwhelmed.",
         symbolName: "arrow.triangle.branch",
         company: .amazon,
+        level: .veryHard,
         steps: [
             WorkflowStep(
                 title: "Build the Traffic Router",
@@ -6883,6 +7070,7 @@ enum WorkflowLibrary {
         summary: "Store settings and config values outside your code, so you can change them without a new deployment.",
         symbolName: "slider.horizontal.3",
         company: .amazon,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Create Your First Parameter",
@@ -6916,6 +7104,7 @@ enum WorkflowLibrary {
         summary: "Filter out malicious requests, like bots and attack attempts, before they ever hit your website or API.",
         symbolName: "shield.lefthalf.filled",
         company: .amazon,
+        level: .veryHard,
         steps: [
             WorkflowStep(
                 title: "Create a Web ACL",
@@ -6955,6 +7144,7 @@ enum WorkflowLibrary {
         summary: "Deploy your app as a container and let AWS handle the servers underneath it entirely.",
         symbolName: "shippingbox.fill",
         company: .amazon,
+        level: .veryHard,
         steps: [
             WorkflowStep(
                 title: "Describe Your Container",
@@ -6994,6 +7184,7 @@ enum WorkflowLibrary {
         summary: "Group all your team's AWS accounts under one roof, with shared billing and consistent rules.",
         symbolName: "building.2.fill",
         company: .amazon,
+        level: .veryHard,
         steps: [
             WorkflowStep(
                 title: "Create Your Organization",
@@ -7032,6 +7223,7 @@ enum WorkflowLibrary {
         summary: "Turn on tracing so you can watch a single request travel through every piece of your app and find out exactly where it's getting stuck.",
         symbolName: "waveform.path.ecg",
         company: .amazon,
+        level: .veryHard,
         steps: [
             WorkflowStep(
                 title: "Turn On Tracing",
@@ -7073,6 +7265,7 @@ enum WorkflowLibrary {
         summary: "Launch a fast, in-memory cache that sits in front of your database so repeat requests come back in a blink instead of a database round-trip.",
         symbolName: "bolt.horizontal.circle.fill",
         company: .amazon,
+        level: .veryHard,
         steps: [
             WorkflowStep(
                 title: "Choose Your Cache Engine",
@@ -7115,6 +7308,7 @@ enum WorkflowLibrary {
         summary: "Build a visual flowchart that runs your Lambda functions and other tasks in order, retries the ones that fail, and shows you exactly where things stand.",
         symbolName: "arrow.triangle.branch",
         company: .amazon,
+        level: .veryHard,
         steps: [
             WorkflowStep(
                 title: "Sketch the State Machine",
@@ -7158,6 +7352,7 @@ enum WorkflowLibrary {
         summary: "Set up one central plan that automatically backs up your databases, file systems, and volumes on a schedule, instead of babysitting backups one service at a time.",
         symbolName: "externaldrive.badge.checkmark",
         company: .amazon,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Create a Backup Vault",
@@ -7201,6 +7396,7 @@ enum WorkflowLibrary {
         summary: "Turn on a watchdog that continuously checks your AWS resources against the rules you set, and flags anything that falls out of line.",
         symbolName: "checklist",
         company: .amazon,
+        level: .veryHard,
         steps: [
             WorkflowStep(
                 title: "Turn On the Configuration Recorder",
@@ -7242,6 +7438,7 @@ enum WorkflowLibrary {
         summary: "Create a real-time pipeline that collects a constant flow of data — clicks, sensor readings, log lines — and holds onto it just long enough for other services to process it.",
         symbolName: "waveform.path",
         company: .amazon,
+        level: .veryHard,
         steps: [
             WorkflowStep(
                 title: "Create the Data Stream",
@@ -7284,6 +7481,7 @@ enum WorkflowLibrary {
         summary: "Connect your code repository to Amplify Hosting so every push automatically builds and publishes your site, with no manual uploading.",
         symbolName: "square.and.arrow.up.fill",
         company: .amazon,
+        level: .medium,
         steps: [
             WorkflowStep(
                 title: "Connect Your Repository",
@@ -7332,6 +7530,7 @@ enum WorkflowLibrary {
         summary: "Set up single sign-on so your team signs in once and gets handed off to whichever AWS account and role they're supposed to use — no separate passwords per account.",
         symbolName: "person.badge.key.fill",
         company: .amazon,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Enable Identity Center",
@@ -7381,6 +7580,7 @@ enum WorkflowLibrary {
         summary: "Set up a shared file system that multiple servers can read and write to at the same time, like a network drive that grows automatically as you add files.",
         symbolName: "folder.badge.person.crop",
         company: .amazon,
+        level: .veryHard,
         steps: [
             WorkflowStep(
                 title: "Create the File System",
@@ -7423,6 +7623,7 @@ enum WorkflowLibrary {
         summary: "Build an encrypted tunnel between your office router and your AWS network so both sides can talk to each other like they're on the same local network.",
         symbolName: "shield.lefthalf.filled",
         company: .amazon,
+        level: .veryHard,
         steps: [
             WorkflowStep(
                 title: "Register Your Customer Gateway",
@@ -7466,6 +7667,7 @@ enum WorkflowLibrary {
         summary: "Connect QuickSight to your data and build an interactive dashboard you can share with your team, without writing a single query by hand.",
         symbolName: "chart.bar.xaxis",
         company: .amazon,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Connect a Dataset",
@@ -7509,6 +7711,7 @@ enum WorkflowLibrary {
         summary: "Launch a cluster built for crunching through massive amounts of data quickly, so your team can run heavy analytics queries without slowing down your regular database.",
         symbolName: "cylinder.split.1x2.fill",
         company: .amazon,
+        level: .veryHard,
         steps: [
             WorkflowStep(
                 title: "Pick a Node Type",
@@ -7552,6 +7755,7 @@ enum WorkflowLibrary {
         summary: "Open a secure shell to your server straight from the browser or command line, without managing SSH keys, open ports, or a bastion host.",
         symbolName: "terminal.fill",
         company: .amazon,
+        level: .veryHard,
         steps: [
             WorkflowStep(
                 title: "Install the SSM Agent",
@@ -7600,6 +7804,7 @@ enum WorkflowLibrary {
         summary: "Make sure a thief who has your unlocked phone still can't change the settings that would lock you out for good.",
         symbolName: "lock.iphone",
         company: nil,
+        level: .easy,
         steps: [
             WorkflowStep(
                 title: "Find Your Device's Extra Protection Setting",
@@ -7629,6 +7834,7 @@ enum WorkflowLibrary {
         summary: "Find out fast when one of your accounts turns up in a leaked database, before someone else uses it against you.",
         symbolName: "exclamationmark.shield",
         company: nil,
+        level: .easy,
         steps: [
             WorkflowStep(
                 title: "Pick a Breach-Monitoring Service",
@@ -7670,6 +7876,7 @@ enum WorkflowLibrary {
         summary: "Stop your browser from handing out saved passwords and card numbers to the wrong website.",
         symbolName: "doc.text.magnifyingglass",
         company: nil,
+        level: .medium,
         steps: [
             WorkflowStep(
                 title: "Open Your Browser's Saved Info",
@@ -7711,6 +7918,7 @@ enum WorkflowLibrary {
         summary: "Let clients or contractors hand you files securely without emailing attachments back and forth.",
         symbolName: "tray.and.arrow.down",
         company: nil,
+        level: .medium,
         steps: [
             WorkflowStep(
                 title: "Create a Shared Upload Folder",
@@ -7752,6 +7960,7 @@ enum WorkflowLibrary {
         summary: "Make sure someone you trust can access or close your accounts if something happens to you.",
         symbolName: "heart.text.square",
         company: nil,
+        level: .medium,
         steps: [
             WorkflowStep(
                 title: "List Your Most Important Accounts",
@@ -7793,6 +8002,7 @@ enum WorkflowLibrary {
         summary: "Close a loophole that lets any certificate authority issue an SSL certificate for your site without your say-so.",
         symbolName: "checkmark.shield",
         company: nil,
+        level: .veryHard,
         steps: [
             WorkflowStep(
                 title: "Find Out Who Already Issues Your Certificates",
@@ -7834,6 +8044,7 @@ enum WorkflowLibrary {
         summary: "Turn any shady hotel or airport network into one you can actually trust.",
         symbolName: "personalhotspot",
         company: nil,
+        level: .medium,
         steps: [
             WorkflowStep(
                 title: "Set Up Your Own Personal Travel Router",
@@ -7875,6 +8086,7 @@ enum WorkflowLibrary {
         summary: "Give your household access to shared logins without texting passwords back and forth.",
         symbolName: "person.3.fill",
         company: nil,
+        level: .medium,
         steps: [
             WorkflowStep(
                 title: "Create a Family Plan in Your Password Manager",
@@ -7916,6 +8128,7 @@ enum WorkflowLibrary {
         summary: "Avoid the scary browser warning that shows up the moment your site's security certificate lapses.",
         symbolName: "calendar.badge.clock",
         company: nil,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Find Your Certificate's Expiration Date",
@@ -7957,6 +8170,7 @@ enum WorkflowLibrary {
         summary: "See how your website's doing without tracking individual visitors around the internet.",
         symbolName: "chart.xyaxis.line",
         company: nil,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Pick a Privacy-Friendly Analytics Tool",
@@ -7998,6 +8212,7 @@ enum WorkflowLibrary {
         summary: "Sign up for anything online without ever handing out your real inbox.",
         symbolName: "envelope.badge.shield.half.filled",
         company: nil,
+        level: .medium,
         steps: [
             WorkflowStep(
                 title: "Turn On Email Masking in Your Browser or Password Manager",
@@ -8041,6 +8256,7 @@ enum WorkflowLibrary {
         summary: "Give a teammate exactly the access they need to do their job, and nothing more.",
         symbolName: "person.badge.key",
         company: .google,
+        level: .veryHard,
         steps: [
             WorkflowStep(
                 title: "Open IAM & Admin",
@@ -8079,6 +8295,7 @@ enum WorkflowLibrary {
         summary: "Have your code test and package itself automatically every time you push a change.",
         symbolName: "hammer.circle",
         company: .google,
+        level: .veryHard,
         steps: [
             WorkflowStep(
                 title: "Enable Cloud Build",
@@ -8124,6 +8341,7 @@ enum WorkflowLibrary {
         summary: "Give your packaged app a proper warehouse to live in instead of scattering builds across laptops.",
         symbolName: "shippingbox",
         company: .google,
+        level: .veryHard,
         steps: [
             WorkflowStep(
                 title: "Open Artifact Registry",
@@ -8162,6 +8380,7 @@ enum WorkflowLibrary {
         summary: "Ask big questions of huge piles of data and get an answer back in seconds.",
         symbolName: "tablecells",
         company: .google,
+        level: .veryHard,
         steps: [
             WorkflowStep(
                 title: "Open BigQuery",
@@ -8200,6 +8419,7 @@ enum WorkflowLibrary {
         summary: "Close the easiest door hackers use by making everyone confirm it's really them at login.",
         symbolName: "lock.shield",
         company: .google,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Open the Admin console",
@@ -8238,6 +8458,7 @@ enum WorkflowLibrary {
         summary: "Let Google safely hold the master key that proves every update to your app is really from you.",
         symbolName: "key.viewfinder",
         company: .google,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Open App Integrity settings",
@@ -8276,6 +8497,7 @@ enum WorkflowLibrary {
         summary: "Find out the moment your app crashes for a real user, and exactly what caused it.",
         symbolName: "exclamationmark.triangle",
         company: .google,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Add Crashlytics to your project",
@@ -8314,6 +8536,7 @@ enum WorkflowLibrary {
         summary: "Make sure only your real app, not bots or copycats, can talk to your backend.",
         symbolName: "checkmark.shield",
         company: .google,
+        level: .veryHard,
         steps: [
             WorkflowStep(
                 title: "Open App Check",
@@ -8352,6 +8575,7 @@ enum WorkflowLibrary {
         summary: "Let a tap on your website's link jump straight into your app instead of a browser tab.",
         symbolName: "link.circle",
         company: .google,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Decide which links should open the app",
@@ -8397,6 +8621,7 @@ enum WorkflowLibrary {
         summary: "Move your domain's address book into Google's fast, reliable DNS hosting.",
         symbolName: "network",
         company: .google,
+        level: .veryHard,
         steps: [
             WorkflowStep(
                 title: "Open Cloud DNS",
@@ -8437,6 +8662,7 @@ enum WorkflowLibrary {
         summary: "Let testers join your beta by tapping one link instead of collecting everyone's email address first.",
         symbolName: "link.circle.fill",
         company: .apple,
+        level: .medium,
         steps: [
             WorkflowStep(
                 title: "Open the Public Link Tab",
@@ -8475,6 +8701,7 @@ enum WorkflowLibrary {
         summary: "Hand out narrow, specific permissions so nobody can accidentally touch parts of your app they shouldn't.",
         symbolName: "person.badge.key.fill",
         company: .apple,
+        level: .medium,
         steps: [
             WorkflowStep(
                 title: "Pick a Role Before You Invite",
@@ -8513,6 +8740,7 @@ enum WorkflowLibrary {
         summary: "Confirm a purchase is legitimate on the spot, without standing up your own server first.",
         symbolName: "checkmark.seal.fill",
         company: .apple,
+        level: .veryHard,
         steps: [
             WorkflowStep(
                 title: "Listen for Transaction Updates",
@@ -8551,6 +8779,7 @@ enum WorkflowLibrary {
         summary: "Push back on a review decision you think is wrong instead of just resubmitting and hoping for better luck.",
         symbolName: "arrow.uturn.left.circle.fill",
         company: .apple,
+        level: .medium,
         steps: [
             WorkflowStep(
                 title: "Read the Rejection Reason Carefully",
@@ -8589,6 +8818,7 @@ enum WorkflowLibrary {
         summary: "Get Xcode Cloud to build, test, or ship automatically based on what you just pushed, without lifting a finger.",
         symbolName: "arrow.triangle.branch",
         company: .apple,
+        level: .veryHard,
         steps: [
             WorkflowStep(
                 title: "Start a New Workflow",
@@ -8627,6 +8857,7 @@ enum WorkflowLibrary {
         summary: "Let Apple scan your Mac app for malware so it opens smoothly instead of scaring people off with a warning.",
         symbolName: "checkmark.shield.fill",
         company: .apple,
+        level: .veryHard,
         steps: [
             WorkflowStep(
                 title: "Archive Your Mac App",
@@ -8665,6 +8896,7 @@ enum WorkflowLibrary {
         summary: "Limit what your Mac app can touch on someone's computer so it stays trustworthy even if something in it goes wrong.",
         symbolName: "shippingbox.fill",
         company: .apple,
+        level: .veryHard,
         steps: [
             WorkflowStep(
                 title: "Turn On App Sandbox",
@@ -8703,6 +8935,7 @@ enum WorkflowLibrary {
         summary: "Keep a user's preferences the same on their iPhone, iPad, and Mac without building your own sync system.",
         symbolName: "icloud.fill",
         company: .apple,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Turn On iCloud Key-Value Storage",
@@ -8741,6 +8974,7 @@ enum WorkflowLibrary {
         summary: "Get your app into a classroom's hands all at once instead of asking every student to buy it individually.",
         symbolName: "graduationcap.fill",
         company: .apple,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Make Sure Your App Qualifies",
@@ -8779,6 +9013,7 @@ enum WorkflowLibrary {
         summary: "Ask Apple's editors directly to consider showcasing your app instead of just hoping they stumble on it.",
         symbolName: "star.bubble.fill",
         company: .apple,
+        level: .medium,
         steps: [
             WorkflowStep(
                 title: "Time It Around Something Real",
@@ -8819,6 +9054,7 @@ enum WorkflowLibrary {
         summary: "Give people outside your company a smooth way to sign into your app using accounts they already trust, without you ever storing their passwords.",
         symbolName: "person.crop.circle.badge.checkmark",
         company: .microsoft,
+        level: .veryHard,
         steps: [
             WorkflowStep(
                 title: "Spin Up a Separate Space for Customer Logins",
@@ -8873,6 +9109,7 @@ enum WorkflowLibrary {
         summary: "Make sure confidential files carry their own protection wherever they travel, even after they leave your company's walls.",
         symbolName: "lock.doc",
         company: .microsoft,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Decide What Counts as Sensitive",
@@ -8927,6 +9164,7 @@ enum WorkflowLibrary {
         summary: "Stop configuration mistakes before they happen by having Azure automatically block or flag resources that break your rules.",
         symbolName: "checkmark.shield",
         company: .microsoft,
+        level: .veryHard,
         steps: [
             WorkflowStep(
                 title: "Pick a Rule to Enforce",
@@ -8981,6 +9219,7 @@ enum WorkflowLibrary {
         summary: "Get warned before your cloud bill gets out of hand instead of finding out at the end of the month.",
         symbolName: "chart.line.uptrend.xyaxis.circle",
         company: .microsoft,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Look at Where Money Is Going",
@@ -9026,6 +9265,7 @@ enum WorkflowLibrary {
         summary: "Give a team one shared identity that automatically comes with a mailbox, calendar, and files instead of setting each one up separately.",
         symbolName: "person.3",
         company: .microsoft,
+        level: .medium,
         steps: [
             WorkflowStep(
                 title: "Decide What the Group Is For",
@@ -9080,6 +9320,7 @@ enum WorkflowLibrary {
         summary: "Make sure important email reaches you or your team even when it lands in an inbox nobody's actively watching.",
         symbolName: "arrowshape.turn.up.right",
         company: .microsoft,
+        level: .easy,
         steps: [
             WorkflowStep(
                 title: "Decide What Should Get Forwarded",
@@ -9125,6 +9366,7 @@ enum WorkflowLibrary {
         summary: "Get a fast, secure website live straight from your code repository without managing a server yourself.",
         symbolName: "globe",
         company: .microsoft,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Point Azure at Your Code",
@@ -9170,6 +9412,7 @@ enum WorkflowLibrary {
         summary: "Let different parts of your system hand off work to each other without losing anything, even if the receiving side is temporarily busy or offline.",
         symbolName: "tray.and.arrow.down",
         company: .microsoft,
+        level: .veryHard,
         steps: [
             WorkflowStep(
                 title: "Create a Place for Messages to Wait",
@@ -9215,6 +9458,7 @@ enum WorkflowLibrary {
         summary: "Let your app safely read or update things like calendars and mail on a user's behalf, without ever seeing their password.",
         symbolName: "point.3.connected.trianglepath.dotted",
         company: .microsoft,
+        level: .veryHard,
         steps: [
             WorkflowStep(
                 title: "Register the App",
@@ -9269,6 +9513,7 @@ enum WorkflowLibrary {
         summary: "Give your app a secure identity Azure manages for you, so it can reach other Azure resources without a password or secret buried in your code.",
         symbolName: "person.badge.shield.checkmark",
         company: .microsoft,
+        level: .veryHard,
         steps: [
             WorkflowStep(
                 title: "Turn On a Built-In Identity",
@@ -9316,6 +9561,7 @@ enum WorkflowLibrary {
         summary: "Automatically discover and reshape raw files sitting in storage into clean, structured data you can query.",
         symbolName: "wand.and.stars",
         company: .amazon,
+        level: .veryHard,
         steps: [
             WorkflowStep(
                 title: "Point Glue at Your Raw Files",
@@ -9366,6 +9612,7 @@ enum WorkflowLibrary {
         summary: "Run plain SQL questions directly against files sitting in storage without loading them into a database first.",
         symbolName: "magnifyingglass",
         company: .amazon,
+        level: .veryHard,
         steps: [
             WorkflowStep(
                 title: "Point Athena at Your Data",
@@ -9408,6 +9655,7 @@ enum WorkflowLibrary {
         summary: "Point at a repo or container image and get a live, auto-scaling web service without picking server sizes or wiring up a load balancer yourself.",
         symbolName: "bolt.horizontal.circle",
         company: .amazon,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Point App Runner at Your Source",
@@ -9450,6 +9698,7 @@ enum WorkflowLibrary {
         summary: "Let apps that already speak old-school messaging protocols talk to each other in the cloud without rewriting them.",
         symbolName: "arrow.left.arrow.right.circle",
         company: .amazon,
+        level: .veryHard,
         steps: [
             WorkflowStep(
                 title: "Spin Up a Broker",
@@ -9492,6 +9741,7 @@ enum WorkflowLibrary {
         summary: "Stop guessing at database size, capacity stretches with traffic automatically and you pay only for what you actually use.",
         symbolName: "cylinder.split.1x2",
         company: .amazon,
+        level: .veryHard,
         steps: [
             WorkflowStep(
                 title: "Create a Database Without Picking a Size",
@@ -9534,6 +9784,7 @@ enum WorkflowLibrary {
         summary: "Stop manually logging into every server to install security updates, and let a schedule do it for you.",
         symbolName: "bandage.fill",
         company: .amazon,
+        level: .veryHard,
         steps: [
             WorkflowStep(
                 title: "Confirm Your Servers Are Checked In",
@@ -9576,6 +9827,7 @@ enum WorkflowLibrary {
         summary: "Give partners a familiar SFTP address to drop files into, while the files actually land straight in your cloud storage.",
         symbolName: "tray.and.arrow.up.fill",
         company: .amazon,
+        level: .veryHard,
         steps: [
             WorkflowStep(
                 title: "Create an SFTP Server",
@@ -9618,6 +9870,7 @@ enum WorkflowLibrary {
         summary: "Keep a flood of junk traffic from taking your app offline instead of scrambling to react once it's already down.",
         symbolName: "shield.lefthalf.filled",
         company: .amazon,
+        level: .veryHard,
         steps: [
             WorkflowStep(
                 title: "Standard Protection Is Already On",
@@ -9660,6 +9913,7 @@ enum WorkflowLibrary {
         summary: "Crunch through a huge pile of computing work without manually managing a fleet of servers to run it on.",
         symbolName: "square.stack.3d.up",
         company: .amazon,
+        level: .veryHard,
         steps: [
             WorkflowStep(
                 title: "Package Your Job as a Container",
@@ -9710,6 +9964,7 @@ enum WorkflowLibrary {
         summary: "Answer 'who's connected to whom' questions fast, the kind that make a regular table-based database choke.",
         symbolName: "network",
         company: .amazon,
+        level: .veryHard,
         steps: [
             WorkflowStep(
                 title: "Launch a Graph Database Cluster",
@@ -9754,6 +10009,7 @@ enum WorkflowLibrary {
         summary: "Give your project an official identity on Meta's platform so it can start talking to Facebook's tools.",
         symbolName: "plus.app",
         company: .facebook,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Start a New App",
@@ -9799,6 +10055,7 @@ enum WorkflowLibrary {
         summary: "Try out real requests against Facebook's data before you commit any of it to code.",
         symbolName: "network",
         company: .facebook,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Open the Explorer",
@@ -9844,6 +10101,7 @@ enum WorkflowLibrary {
         summary: "Get a temporary pass that lets your app act on someone's behalf for just that session.",
         symbolName: "person.badge.key",
         company: .facebook,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Understand What You're Requesting",
@@ -9889,6 +10147,7 @@ enum WorkflowLibrary {
         summary: "Swap a token that dies in an hour for one that keeps working for roughly two months.",
         symbolName: "arrow.triangle.2.circlepath",
         company: .facebook,
+        level: .veryHard,
         steps: [
             WorkflowStep(
                 title: "Notice the Short Lifespan",
@@ -9934,6 +10193,7 @@ enum WorkflowLibrary {
         summary: "Tell Facebook exactly which website your app belongs to so it can trust traffic coming from it.",
         symbolName: "globe",
         company: .facebook,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Find the App Domains Field",
@@ -9979,6 +10239,7 @@ enum WorkflowLibrary {
         summary: "Ask Meta's reviewers to unlock the permissions your app needs beyond what your own test accounts can show.",
         symbolName: "checkmark.seal",
         company: .facebook,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Understand Why Review Exists",
@@ -10024,6 +10285,7 @@ enum WorkflowLibrary {
         summary: "Try out login flows and permissions without risking your own or anyone else's real Facebook account.",
         symbolName: "person.crop.circle.badge.plus",
         company: .facebook,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Open the Test Users Panel",
@@ -10069,6 +10331,7 @@ enum WorkflowLibrary {
         summary: "Get Facebook to ping your server the instant something changes, instead of you constantly checking for updates.",
         symbolName: "bolt.horizontal.circle",
         company: .facebook,
+        level: .veryHard,
         steps: [
             WorkflowStep(
                 title: "Understand the Push Model",
@@ -10114,6 +10377,7 @@ enum WorkflowLibrary {
         summary: "Understand exactly what access you're asking for before you ever put it in front of a real user.",
         symbolName: "key.horizontal",
         company: .facebook,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "See Access as a Set of Slices",
@@ -10159,6 +10423,7 @@ enum WorkflowLibrary {
         summary: "Open your app up to everyday Facebook users instead of just your own development team.",
         symbolName: "antenna.radiowaves.left.and.right",
         company: .facebook,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Know What Development Mode Limits",
@@ -10206,6 +10471,7 @@ enum WorkflowLibrary {
         summary: "Give your company one official home base on Meta instead of running everything through someone's personal profile.",
         symbolName: "building.2.fill",
         company: .facebook,
+        level: .medium,
         steps: [
             WorkflowStep(
                 title: "Start Your Business Account",
@@ -10244,6 +10510,7 @@ enum WorkflowLibrary {
         summary: "Let your website or software talk to Meta's tools directly without borrowing a real teammate's login.",
         symbolName: "desktopcomputer",
         company: .facebook,
+        level: .veryHard,
         steps: [
             WorkflowStep(
                 title: "Understand What You're Creating",
@@ -10289,6 +10556,7 @@ enum WorkflowLibrary {
         summary: "Give another company access to a single Page or ad account without handing over the keys to everything else you own.",
         symbolName: "key.fill",
         company: .facebook,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Know When You'd Do This",
@@ -10334,6 +10602,7 @@ enum WorkflowLibrary {
         summary: "Prove your company is legitimate so Meta unlocks higher-trust features like larger ad spend and stronger Page protections.",
         symbolName: "checkmark.seal.fill",
         company: .facebook,
+        level: .medium,
         steps: [
             WorkflowStep(
                 title: "See Why It's Worth Doing",
@@ -10379,6 +10648,7 @@ enum WorkflowLibrary {
         summary: "Let teammates help run your Page without giving everyone the same keys to change everything on it.",
         symbolName: "person.3.fill",
         company: .facebook,
+        level: .medium,
         steps: [
             WorkflowStep(
                 title: "Think Before You Add Everyone as Admin",
@@ -10417,6 +10687,7 @@ enum WorkflowLibrary {
         summary: "Control exactly who can spend your money and who can only look at how it's performing.",
         symbolName: "person.badge.key.fill",
         company: .facebook,
+        level: .medium,
         steps: [
             WorkflowStep(
                 title: "Separate Spending From Watching",
@@ -10455,6 +10726,7 @@ enum WorkflowLibrary {
         summary: "Close the easiest door hackers use — a stolen password — for every single person who touches your Business Manager.",
         symbolName: "lock.shield.fill",
         company: .facebook,
+        level: .medium,
         steps: [
             WorkflowStep(
                 title: "Understand the Blast Radius",
@@ -10493,6 +10765,7 @@ enum WorkflowLibrary {
         summary: "Prove you own your website so Meta trusts links and data coming from it instead of anyone who copies your domain.",
         symbolName: "globe",
         company: .facebook,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "See Why Ownership Matters",
@@ -10538,6 +10811,7 @@ enum WorkflowLibrary {
         summary: "Make sure the right company account is truly in control of your product catalog, especially when an agency or partner set it up on your behalf.",
         symbolName: "shippingbox.fill",
         company: .facebook,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Know Who's Actually in Charge",
@@ -10583,6 +10857,7 @@ enum WorkflowLibrary {
         summary: "Unlock a feature for all of your app's real customers instead of just the handful of people on your own team.",
         symbolName: "star.circle.fill",
         company: .facebook,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Understand the Two Tiers",
@@ -10630,6 +10905,7 @@ enum WorkflowLibrary {
         summary: "Give visitors a one-tap way to create an account and log in using the Facebook profile they already have.",
         symbolName: "person.badge.key.fill",
         company: .facebook,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Get Your App's ID and Secret",
@@ -10675,6 +10951,7 @@ enum WorkflowLibrary {
         summary: "Keep people's trust by requesting the smallest possible slice of their Facebook profile.",
         symbolName: "slider.horizontal.3",
         company: .facebook,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "See What Your App Is Currently Requesting",
@@ -10720,6 +10997,7 @@ enum WorkflowLibrary {
         summary: "Turn a plain, boring link into a rich preview card with your own title, image, and description.",
         symbolName: "photo.on.rectangle.angled",
         company: .facebook,
+        level: .medium,
         steps: [
             WorkflowStep(
                 title: "Add the Basic Preview Tags",
@@ -10765,6 +11043,7 @@ enum WorkflowLibrary {
         summary: "Start measuring which visitors actually turn into customers after clicking away from Facebook.",
         symbolName: "viewfinder",
         company: .facebook,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Create a Pixel for Your Website",
@@ -10810,6 +11089,7 @@ enum WorkflowLibrary {
         summary: "Find out exactly which visitors complete the action you actually care about, not just who showed up.",
         symbolName: "flag.fill",
         company: .facebook,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Pick the Moment Worth Tracking",
@@ -10855,6 +11135,7 @@ enum WorkflowLibrary {
         summary: "Keep your event data accurate even when browsers block or lose the pixel's tracking calls.",
         symbolName: "server.rack",
         company: .facebook,
+        level: .veryHard,
         steps: [
             WorkflowStep(
                 title: "See Why Browser Tracking Alone Falls Short",
@@ -10900,6 +11181,7 @@ enum WorkflowLibrary {
         summary: "Turn your own website traffic into a reusable group you can reach again later.",
         symbolName: "list.bullet.rectangle.portrait",
         company: .facebook,
+        level: .medium,
         steps: [
             WorkflowStep(
                 title: "Decide Which Visitors You Want to Regroup",
@@ -10945,6 +11227,7 @@ enum WorkflowLibrary {
         summary: "Reach strangers who share traits with the people who already love what you offer.",
         symbolName: "person.crop.circle.badge.plus",
         company: .facebook,
+        level: .medium,
         steps: [
             WorkflowStep(
                 title: "Pick a Source Group to Copy the Pattern From",
@@ -10990,6 +11273,7 @@ enum WorkflowLibrary {
         summary: "Let visitors leave comments using their existing Facebook account instead of building your own comment system.",
         symbolName: "bubble.left.and.bubble.right.fill",
         company: .facebook,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Grab the Comments Embed Code",
@@ -11035,6 +11319,7 @@ enum WorkflowLibrary {
         summary: "Stay compliant by automatically deleting someone's data the moment they disconnect your app from their account.",
         symbolName: "person.crop.circle.badge.xmark",
         company: .facebook,
+        level: .veryHard,
         steps: [
             WorkflowStep(
                 title: "Understand What Facebook Expects You to Do",
@@ -11089,6 +11374,7 @@ enum WorkflowLibrary {
         summary: "Get your ad account set up the right way so every campaign you run afterward has a solid home.",
         symbolName: "person.crop.rectangle.badge.plus",
         company: .facebook,
+        level: .medium,
         steps: [
             WorkflowStep(
                 title: "Find Your Way to Ads Manager",
@@ -11127,6 +11413,7 @@ enum WorkflowLibrary {
         summary: "Understand how campaigns, ad sets, and ads stack together so your ad spend goes exactly where you intend.",
         symbolName: "square.stack.3d.up.fill",
         company: .facebook,
+        level: .medium,
         steps: [
             WorkflowStep(
                 title: "Meet the Three Layers",
@@ -11172,6 +11459,7 @@ enum WorkflowLibrary {
         summary: "Prep images and video ahead of time so nothing gets cropped, rejected, or stretched once your ad goes live.",
         symbolName: "photo.on.rectangle.angled",
         company: .facebook,
+        level: .medium,
         steps: [
             WorkflowStep(
                 title: "Let Placements Set the Shape",
@@ -11217,6 +11505,7 @@ enum WorkflowLibrary {
         summary: "Build a conversion you can actually optimize and report on out of the raw events your Pixel is already tracking.",
         symbolName: "target",
         company: .facebook,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Head to Events Manager",
@@ -11262,6 +11551,7 @@ enum WorkflowLibrary {
         summary: "Load your products into one organized catalog so Meta can turn them into shoppable ads and shop listings automatically.",
         symbolName: "shippingbox.fill",
         company: .facebook,
+        level: .medium,
         steps: [
             WorkflowStep(
                 title: "Create a Catalog in Commerce Manager",
@@ -11307,6 +11597,7 @@ enum WorkflowLibrary {
         summary: "Turn your product catalog into a browsable storefront that lives right on your Facebook Page or Instagram profile.",
         symbolName: "bag.fill",
         company: .facebook,
+        level: .medium,
         steps: [
             WorkflowStep(
                 title: "Start the Shop Setup Flow",
@@ -11352,6 +11643,7 @@ enum WorkflowLibrary {
         summary: "Spot and fix the reason your Pixel events aren't showing up so your ad optimization has accurate data to work with.",
         symbolName: "waveform.path.ecg",
         company: .facebook,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Open the Events Overview",
@@ -11397,6 +11689,7 @@ enum WorkflowLibrary {
         summary: "Get billing squared away so your campaigns can actually spend the budget you set for them.",
         symbolName: "creditcard.fill",
         company: .facebook,
+        level: .medium,
         steps: [
             WorkflowStep(
                 title: "Open Billing Settings",
@@ -11442,6 +11735,7 @@ enum WorkflowLibrary {
         summary: "Hand placement decisions to Meta's system so your ads automatically show up wherever they're likely to perform best.",
         symbolName: "wand.and.stars",
         company: .facebook,
+        level: .medium,
         steps: [
             WorkflowStep(
                 title: "Manual vs. Letting the System Choose",
@@ -11487,6 +11781,7 @@ enum WorkflowLibrary {
         summary: "Decide how much to spend and how Meta should spend it, so your budget stretches toward the results you actually want.",
         symbolName: "chart.pie.fill",
         company: .facebook,
+        level: .medium,
         steps: [
             WorkflowStep(
                 title: "Decide Where the Budget Lives",
@@ -11527,6 +11822,7 @@ enum WorkflowLibrary {
         summary: "Let your Page send and receive Messenger chats automatically instead of someone typing every reply by hand.",
         symbolName: "bubble.left.and.bubble.right",
         company: .facebook,
+        level: .veryHard,
         steps: [
             WorkflowStep(
                 title: "Understand What You're Building",
@@ -11572,6 +11868,7 @@ enum WorkflowLibrary {
         summary: "Send and receive WhatsApp messages from your own software instead of tapping around on a phone.",
         symbolName: "phone.bubble.left",
         company: .facebook,
+        level: .veryHard,
         steps: [
             WorkflowStep(
                 title: "Know the Difference That Trips Everyone Up",
@@ -11610,6 +11907,7 @@ enum WorkflowLibrary {
         summary: "Link your Instagram account to your Page so all your business tools can see and manage both in one place.",
         symbolName: "link",
         company: .facebook,
+        level: .easy,
         steps: [
             WorkflowStep(
                 title: "Switch Instagram to a Professional Account",
@@ -11648,6 +11946,7 @@ enum WorkflowLibrary {
         summary: "Let your own software read and manage your Instagram account instead of doing everything by hand in the app.",
         symbolName: "chevron.left.slash.chevron.right",
         company: .facebook,
+        level: .veryHard,
         steps: [
             WorkflowStep(
                 title: "Confirm the Prerequisite Link Exists",
@@ -11686,6 +11985,7 @@ enum WorkflowLibrary {
         summary: "Let a chatbot handle the easy questions and smoothly pass tricky ones to a real person without the customer noticing a hiccup.",
         symbolName: "arrow.left.arrow.right",
         company: .facebook,
+        level: .veryHard,
         steps: [
             WorkflowStep(
                 title: "Picture the Relay Race",
@@ -11731,6 +12031,7 @@ enum WorkflowLibrary {
         summary: "Get the blue check next to your Page or profile so customers know they've found the real you.",
         symbolName: "checkmark.seal",
         company: .facebook,
+        level: .medium,
         steps: [
             WorkflowStep(
                 title: "Understand What the Badge Actually Buys",
@@ -11769,6 +12070,7 @@ enum WorkflowLibrary {
         summary: "Answer every Facebook and Instagram conversation from a single screen instead of switching between two apps.",
         symbolName: "tray.2",
         company: .facebook,
+        level: .easy,
         steps: [
             WorkflowStep(
                 title: "Open Meta Business Suite",
@@ -11814,6 +12116,7 @@ enum WorkflowLibrary {
         summary: "See real usage numbers for your Facebook-connected app instead of guessing whether people are running into trouble.",
         symbolName: "chart.xyaxis.line",
         company: .facebook,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Find the Insights Section",
@@ -11852,6 +12155,7 @@ enum WorkflowLibrary {
         summary: "Confirm your website is really sending data back to Meta instead of silently failing in the background.",
         symbolName: "wand.and.rays",
         company: .facebook,
+        level: .hard,
         steps: [
             WorkflowStep(
                 title: "Install the Browser Helper Tool",
@@ -11890,6 +12194,7 @@ enum WorkflowLibrary {
         summary: "Make sure you can always get back into your Page even if your login is lost, stolen, or forgotten.",
         symbolName: "lock.shield",
         company: .facebook,
+        level: .easy,
         steps: [
             WorkflowStep(
                 title: "Turn on Two-Factor Authentication",
@@ -11924,7 +12229,11 @@ enum WorkflowLibrary {
     )
 
 
-    static let all: [Workflow] = [
+    /// The full catalog: beginner guides first, then the original
+    /// library. Sections sort by level on top of this order.
+    static let all: [Workflow] = beginnerGuides + originalGuides
+
+    private static let originalGuides: [Workflow] = [
         dnsSetup, twoFactorAuthSetup, passwordManagerSetup, vpnSetup, wifiRouterSetup,
         cloudStorageSyncSetup, browserSyncSetup, emailDeliverabilitySetup,
         searchEngineVisibilitySetup, faviconSetup, qrCodeSetup, contactFormSpamProtection,

@@ -50,7 +50,11 @@ struct JargonTerm: Identifiable, Codable, Hashable {
 /// array is the single source of truth for every jargon translation in
 /// the app — no server sync, no A/B-tested copy.
 enum JargonGlossary {
-    static let allTerms: [JargonTerm] = [
+    /// Every glossary card: the everyday beginner terms first, then the
+    /// original technical catalog.
+    static let allTerms: [JargonTerm] = beginnerTerms + technicalTerms
+
+    private static let technicalTerms: [JargonTerm] = [
         JargonTerm(
             term: "A Record",
             analogy: "Address Sign",
@@ -559,7 +563,7 @@ enum JargonGlossary {
             term: "Verification Code",
             analogy: "Secret Handshake",
             symbolName: "key.fill",
-            explanation: "A verification code is a secret handshake Google sends you — by postcard, call, or email — to prove the shop is really yours."
+            explanation: "A verification code is a short, one-time number a service sends by text, email, call, or postcard to prove it's really you, like a ticket stub that only works once and expires soon. Never read one out to someone who contacts you asking for it."
         ),
         JargonTerm(
             term: "reCAPTCHA",
