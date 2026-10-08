@@ -1,6 +1,6 @@
 //
 //  GlossaryView.swift
-//  Clarify
+//  Tech Unknotted (project: Clarify)
 //
 //  A standalone browse view over the entire local JargonGlossary, so
 //  the flip-card translator is useful even outside of an active
@@ -18,20 +18,35 @@ import SwiftUI
 struct GlossaryView: View {
     @Environment(GamificationManager.self) private var gamification
     @State private var searchText = ""
+    @State private var showEverydayOnly = false
 
     private let columns = [GridItem(.adaptive(minimum: 160, maximum: 220), spacing: 12)]
 
+    /// Everyday words (the vocabulary of the Very Easy guides) or the
+    /// full catalog, then narrowed by search across the term, its
+    /// analogy, and its explanation.
     private var filteredTerms: [JargonTerm] {
+        let source = showEverydayOnly ? JargonGlossary.beginnerTerms : JargonGlossary.allTerms
         let query = searchText.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
-        guard !query.isEmpty else { return JargonGlossary.allTerms }
-        return JargonGlossary.allTerms.filter {
-            $0.term.lowercased().contains(query) || $0.analogy.lowercased().contains(query)
+        guard !query.isEmpty else { return source }
+        return source.filter {
+            $0.term.lowercased().contains(query)
+                || $0.analogy.lowercased().contains(query)
+                || $0.explanation.lowercased().contains(query)
         }
     }
 
     var body: some View {
         NavigationStack {
             ScrollView {
+                Picker("Show", selection: $showEverydayOnly) {
+                    Text("All Terms").tag(false)
+                    Text("Everyday Words").tag(true)
+                }
+                .pickerStyle(.segmented)
+                .padding(.horizontal, 20)
+                .padding(.top, 8)
+
                 if filteredTerms.isEmpty {
                     ContentUnavailableView.search(text: searchText)
                         .padding(.top, 60)

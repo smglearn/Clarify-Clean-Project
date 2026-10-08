@@ -83,10 +83,14 @@ struct FocusPagerView<StepContent: View>: View {
 
     private var header: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("Step \(manager.currentStepIndex + 1) of \(manager.workflow.steps.count)")
-                .font(.caption.weight(.semibold))
-                .foregroundStyle(.secondary)
-                .accessibilityHidden(true)
+            HStack {
+                Text("Step \(manager.currentStepIndex + 1) of \(manager.workflow.steps.count)")
+                    .font(.caption.weight(.semibold))
+                    .foregroundStyle(.secondary)
+                    .accessibilityHidden(true)
+                Spacer()
+                GuideLevelBadge(level: manager.workflow.level, compact: true)
+            }
 
             ProgressView(value: manager.progressFraction)
                 .tint(.accentColor)
